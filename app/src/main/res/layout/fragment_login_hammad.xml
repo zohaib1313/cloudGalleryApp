@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:windowSoftInputMode="adjustResize|adjustPan">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        tools:context=".FragmentLoginRegister">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:lottie_fileName="imageloader.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <!-- For phone no -->
+        <LinearLayout
+            android:id="@+id/phoneLl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_marginTop="10dp"
+                android:text="Phone Number"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:textColor="#000"></TextView>
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please Enter your Mobile Number to Continue"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:gravity="center_horizontal"></TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:gravity="center"
+                android:background="@drawable/linearlayoutbg"
+                android:orientation="horizontal">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/etCountryCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccp_arrowSize="14dp"
+                    android:layout_marginLeft="20dp"
+                    app:ccp_autoDetectCountry="true"
+                    app:ccp_autoDetectLanguage="true"
+                    app:ccp_autoFormatNumber="true"
+                    app:ccp_countryAutoDetectionPref="SIM_ONLY"
+                    app:ccp_defaultLanguage="ENGLISH"
+                    app:ccp_defaultNameCode="PK"
+                    app:ccp_rememberLastSelection="true"
+                    app:ccp_showFlag="true"
+                    app:ccp_textSize="14dp"
+                    app:ccp_arrowColor="@color/white"
+                    app:ccp_contentColor="@color/white"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPhoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="4dp"
+                    android:maxLength="10"
+                    android:digits="0123456789"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:maxLines="1"
+                    android:text="3062196778"
+                    android:textColorHint="@color/grey"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/white"
+                    tools:ignore="RtlCompat" />
+
+            </LinearLayout>
+
+
+
+            <Button
+                android:id="@+id/phoneContinueButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/yellow"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"></Button>
+
+        </LinearLayout>
+
+
+        <!-- For OTP -->
+
+        <LinearLayout
+            android:id="@+id/codeLl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="OTP Verification"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"></TextView>
+
+            <TextView
+                android:id="@+id/codeSentDescTv"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Please Enter the verification code we sent to +92xxxxxxxxxx"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal"></TextView>
+
+
+            <TextView
+                android:id="@+id/resendCodeTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:padding="5dp"
+
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:text="@string/didn_t_get_otp_resend"></TextView>
+
+            <com.goodiebag.pinview.Pinview
+                android:id="@+id/pinview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="14dp"
+                app:cursorVisible="true"
+                app:forceKeyboard="false"
+                android:textColor="@color/white"
+                app:inputType="number"
+
+                app:password="false"
+                app:pinBackground="@drawable/otpview_drawable"
+                app:pinHeight="40dp"
+                app:pinLength="6"
+                app:pinWidth="40dp" />
+
+
+
+
+
+            <EditText
+                android:id="@+id/codeEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#FFF"
+                android:hint="xxxxxx"
+                android:visibility="gone"
+                android:text="123654"
+                android:layout_gravity="center_horizontal"
+                android:inputType="phone"
+                android:padding="10dp"
+                android:textColor="#000"
+                android:textColorHint="#c5c5c5"
+                android:textAlignment="center"
+                ></EditText>
+
+            <Button
+                android:id="@+id/codeSubmitButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:backgroundTint="@color/yellow"
+                android:layout_marginRight="30dp"
+                android:text="Submit"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"></Button>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

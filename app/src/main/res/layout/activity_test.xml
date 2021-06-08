@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/black"
+    android:layout_height="match_parent"
+    tools:context=".activities.TestActivity">
+
+    <soup.neumorphism.NeumorphButton
+        android:id="@+id/btn_upload_privt"
+        android:padding="@dimen/_20sdp"
+        app:neumorph_backgroundColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload private File"
+        app:neumorph_shapeType="flat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <soup.neumorphism.NeumorphButton
+        android:id="@+id/btnUploadPublic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:padding="@dimen/_20sdp"
+        android:text="Upload public File"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_upload_privt"
+        app:neumorph_backgroundColor="@color/white"
+        app:neumorph_shapeType="flat" />
+
+    <soup.neumorphism.NeumorphButton
+        android:id="@+id/btnDownloadPublicFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="388dp"
+        android:padding="@dimen/_20sdp"
+        android:text="Download public File"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:neumorph_backgroundColor="@color/white"
+        app:neumorph_shapeType="flat" />
+
+    <soup.neumorphism.NeumorphButton
+        android:id="@+id/btnDownloadPrvtFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:padding="@dimen/_20sdp"
+        android:text="Download private File"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:neumorph_backgroundColor="@color/white"
+        app:neumorph_shapeType="flat" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.06" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionPublicFeed"
+        android:icon="@drawable/contact_book"
+
+        android:title="Feed"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionPrivateFeed"
+        android:icon="@drawable/recieve"
+        android:title="Private Feed"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionRequests"
+        android:icon="@drawable/history"
+        android:title="Requests"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionNotifications"
+
+        android:icon="@drawable/flag_benin"
+        android:title="Notifications"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionMyAccount"
+        android:icon="@drawable/user"
+        android:title="Profile"
+        app:showAsAction="always" />
+</menu>

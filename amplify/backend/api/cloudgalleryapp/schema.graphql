@@ -1,0 +1,78 @@
+type UserCloudGallery @model {
+    id: ID!
+    name: String!
+    phone: String!
+    image: String
+    device_token: String!
+    createdTime: String!
+    isPublic: Boolean!
+    about: String
+}
+
+
+
+type Posts @model {
+    id: ID!
+    createdTime: String!
+    image: String!
+    isPublic:Boolean!
+    title: String!
+    description:String!
+    whoPostedUser: UserCloudGallery! @connection
+}
+
+
+type Comments @model {
+    id: ID!
+    createdTime: String!
+    content: String!
+    post:Posts! @connection
+    whoCommentedUser: UserCloudGallery! @connection
+}
+
+type Likes @model {
+    id: ID!
+    postId:String!
+    whoLikedUser: UserCloudGallery! @connection
+}
+
+
+type Views @model {
+    id: ID!
+    post:Posts! @connection
+    whoViewedUser: UserCloudGallery! @connection
+}
+
+type PostStatus @model {
+    id: ID!
+    post:Posts! @connection
+    allowedUser: UserCloudGallery! @connection
+}
+
+type BlockedUsers @model {
+    id: ID!
+    blockBy: UserCloudGallery! @connection
+    blockTo: UserCloudGallery! @connection
+}
+
+type Connections @model {
+    id: ID!
+    status:String!
+    followBy: UserCloudGallery! @connection
+    followTo: UserCloudGallery! @connection
+}
+
+
+type UserBadges @model {
+    id: ID!
+    user: UserCloudGallery! @connection
+    badge: Badges! @connection
+}
+
+
+type Badges @model {
+    id: ID!
+    image:String!
+    title:String!
+    description:String!
+}

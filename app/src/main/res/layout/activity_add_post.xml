@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Post Title"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+        <!--Edit text title-->
+        <EditText
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter title..."
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+
+            android:textColorHint="@color/grey"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Post Description"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+        <!--Edit text desc-->
+        <EditText
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:hint="Whats on your mind?"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minHeight="120dp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/brickRed"
+
+            />
+        <!--Image View-->
+        <ImageView
+            android:id="@+id/pImageIv"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/black"
+            android:fitsSystemWindows="true"
+            android:minHeight="250dp"
+            android:src="@color/red"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/galleryBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button_white"
+                android:drawableLeft="@drawable/flag_american_samoa"
+                android:drawablePadding="5dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="5dp"
+                android:text="Photo"
+                android:textColor="@color/white" />
+
+<!--            <Button-->
+<!--                android:id="@+id/cameraBtn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="2dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/rounded_button_white_stroke"-->
+<!--                android:drawableLeft="@drawable/flag_cambodia"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:paddingLeft="30dp"-->
+<!--                android:paddingRight="30dp"-->
+<!--                android:paddingBottom="5dp"-->
+<!--                android:text="Camera"-->
+<!--                android:textColor="@color/white"/>-->
+
+
+        </LinearLayout>
+
+        <!--Upload Button-->
+        <Button
+            android:id="@+id/pUploadBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@drawable/rounded_button_white"
+            android:text="Post"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold">
+
+        </Button>
+
+
+    </LinearLayout>
+
+</ScrollView>

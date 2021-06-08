@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:fitsSystemWindows="true"
+    android:windowSoftInputMode="adjustResize|adjustPan"
+    android:fillViewport="true"
+    >
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_color_blue"
+        tools:context=".fragments.ProfileFragmentF">
+
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+            <TextView
+
+                style="@style/AppTextViewBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_12sdp"
+                android:text="Profile" />
+
+        </RelativeLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView4"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_26sdp"
+            android:src="@drawable/eclipse"
+            app:layout_constraintEnd_toEndOf="@+id/textView4"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/AppTextViewBold"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:text="What is your name?"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintEnd_toEndOf="@+id/rlHeader"
+            app:layout_constraintStart_toStartOf="@+id/rlHeader"
+            app:layout_constraintTop_toBottomOf="@+id/rlHeader" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_shape_camera_icon_bg"
+            android:padding="@dimen/_4sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="@+id/imageView4">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:background="@drawable/ic_baseline_camera_alt_24"
+                android:padding="@dimen/_2sdp" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:layout_marginTop="@dimen/_26sdp"
+            android:id="@+id/editTextTextPersonName"
+            style="@style/AppTextViewNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_26sdp"
+            android:layout_marginEnd="@dimen/_26sdp"
+            android:background="@drawable/rounded_button_white"
+            android:gravity="start"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:padding="@dimen/_10sdp"
+            android:text="zohaib"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/AppTextViewBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+       android:layout_marginTop="@dimen/_26sdp"
+            android:text="Private Account"
+            android:textColor="@color/grey"
+            app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:theme="@style/SCBSwitch"
+            android:checked="true"
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

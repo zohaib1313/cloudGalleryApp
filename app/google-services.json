@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "793399816478",
+    "project_id": "cloud-gallery-app",
+    "storage_bucket": "cloud-gallery-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793399816478:android:5337e61dfbc6c3dcb1d90f",
+        "android_client_info": {
+          "package_name": "com.ladstech.cloudgalleryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793399816478-q4ou8vqg6h427vpkd6sfnu5dqi1sk5mt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ladstech.cloudgalleryapp",
+            "certificate_hash": "0b9368826cbb3b83eeb6a2a96f20871938be518a"
+          }
+        },
+        {
+          "client_id": "793399816478-t7leoc1i9eu00ku16gt31lvf87brarnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHBZ15woAAzO-6ot7FYzs9NhEN5tljTQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793399816478-t7leoc1i9eu00ku16gt31lvf87brarnk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

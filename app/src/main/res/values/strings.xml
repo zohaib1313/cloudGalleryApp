@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Cloud Gallery App</string>
+
+    <string name="didn_t_get_otp_resend">Didn\'t get OTP? <b>Resend</b></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_form_empty_field_of">Please enter %s</string>
+    <string name="not_valid_phone_number">not valid phone number</string>
+</resources>
