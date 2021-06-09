@@ -8,13 +8,13 @@
     android:layout_marginTop="@dimen/_8sdp"
     android:layout_marginEnd="@dimen/_8sdp">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.ladstech.cloudgalleryapp.customViews.SquareImageView
         android:id="@+id/imageView5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_200sdp"
         android:background="@color/white"
         android:scaleType="fitXY"
-        android:src="@drawable/g"
+        android:src="@drawable/d"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         tools:layout_editor_absoluteX="5dp">
 
+        <com.mikhaellopez.circularimageview.CircularImageView
 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:civ_border="true"
+            android:src="@drawable/flag_transparent"
+            android:layout_margin="@dimen/_4sdp"
+            app:civ_border_color="@color/grey"
+            app:civ_border_width="1dp" />
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/ivUser"
             android:layout_width="wrap_content"
@@ -37,7 +45,7 @@
             android:src="@drawable/flag_american_samoa"
             app:civ_border="true"
             app:civ_border_color="@color/grey"
-            app:civ_border_width="2dp" />
+            app:civ_border_width="1dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -16,19 +16,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <me.relex.circleindicator.CircleIndicator3
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+<!--    <me.relex.circleindicator.CircleIndicator3-->
+<!--        android:id="@+id/indicator"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_above="@+id/btnGetStarted"-->
+<!--        android:padding="@dimen/_15sdp"-->
+<!--        app:ci_drawable="@drawable/page_indicator_circle"-->
+<!--        app:ci_height="@dimen/_4sdp"-->
+<!--        app:ci_margin="@dimen/_4sdp"-->
+<!--        android:visibility="gone"-->
+<!--        app:ci_width="@dimen/_4sdp" />-->
+    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+        android:id="@+id/dots"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/btnGetStarted"
-        android:padding="@dimen/_15sdp"
-        app:ci_drawable="@drawable/page_indicator_circle"
-        app:ci_height="@dimen/_4sdp"
-        app:ci_margin="@dimen/_4sdp"
-        app:ci_width="@dimen/_4sdp" />
+        app:dotsColor="@color/grey"
+        app:dotsCornerRadius="@dimen/_8sdp"
 
-    <ImageView
+        app:dotsSize="@dimen/_8sdp"
+        app:dotsSpacing="@dimen/_4sdp"
+        app:dotsWidthFactor="2.5"
+android:layout_marginBottom="@dimen/_16sdp"
+
+        />
+    <TextView
+        style="@style/AppTextViewNormal"
+        android:textColor="@color/white"
         android:id="@id/btnGetStarted"
+        android:drawablePadding="@dimen/_8sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -36,38 +54,15 @@
         android:layout_marginEnd="@dimen/_14sdp"
         android:layout_marginBottom="@dimen/_14sdp"
         android:background="@drawable/rect_button_red_bg"
-        android:paddingStart="@dimen/_14sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_14sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:src="@drawable/ic_baseline_arrow_forward_24"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingTop="@dimen/_6sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_6sdp"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_24"
         app:backgroundTint="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
-    <!--    <soup.neumorphism.NeumorphImageView-->
-    <!--        android:id="@id/btnGetStarted"-->
-    <!--        style="@style/Widget.Neumorph.Button"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_alignParentEnd="true"-->
-    <!--        android:layout_alignParentBottom="true"-->
-    <!--        android:layout_marginEnd="@dimen/_14sdp"-->
-    <!--        android:layout_marginBottom="@dimen/_14sdp"-->
-    <!--        android:paddingStart="@dimen/_25sdp"-->
-    <!--        android:paddingTop="@dimen/_16sdp"-->
-    <!--        android:hapticFeedbackEnabled="false"-->
-    <!--        android:paddingEnd="@dimen/_25sdp"-->
-    <!--        android:paddingBottom="@dimen/_16sdp"-->
-    <!--        android:src="@drawable/ic_baseline_arrow_forward_24"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:neumorph_backgroundColor="@color/red"-->
-    <!--        app:neumorph_shadowColorDark="@color/red"-->
-    <!--        app:neumorph_shadowColorLight="@color/brickRed"-->
-    <!--        app:neumorph_shadowElevation="@dimen/_2sdp"-->
-    <!--        />-->
 </RelativeLayout>
 
 

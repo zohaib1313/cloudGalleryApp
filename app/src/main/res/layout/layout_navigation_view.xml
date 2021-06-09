@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:background="@drawable/bg_nav_drawer"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/_25sdp">
+
+        <RelativeLayout
+            android:id="@+id/rlBlockedUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/AppTextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/user"
+                android:drawablePadding="@dimen/_25sdp"
+                android:padding="@dimen/_8sdp"
+                android:text="Blocked Users"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlShareApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/AppTextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_baseline_star_24"
+                android:drawablePadding="@dimen/_25sdp"
+                android:padding="@dimen/_8sdp"
+                android:text="Share App"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlRateApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/AppTextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_baseline_share_24"
+                android:drawablePadding="@dimen/_25sdp"
+                android:padding="@dimen/_8sdp"
+                android:text="Rate App"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

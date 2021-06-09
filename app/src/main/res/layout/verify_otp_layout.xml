@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container"
+    android:background="@color/transparent"
+    android:layout_gravity="center">
+
+
+    <androidx.cardview.widget.CardView
+        android:elevation="@dimen/_26sdp"
+        android:layout_margin="@dimen/_14sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="@dimen/_14sdp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+android:paddingTop="@dimen/_30sdp"
+            android:paddingBottom="@dimen/_30sdp"
+            android:gravity="center">
+
+
+            <ImageView
+                android:layout_marginTop="@dimen/_8sdp"
+                android:id="@+id/ivOtp"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/c" />
+
+            <TextView
+                android:layout_marginTop="@dimen/_8sdp"
+                android:id="@+id/title"
+                style="@style/AppTextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivOtp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="Enter 6 Digit Code"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <com.goodiebag.pinview.Pinview
+                android:layout_marginTop="@dimen/_8sdp"
+                android:id="@+id/pinview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:elevation="14dp"
+                android:textColor="@color/white"
+                app:cursorVisible="true"
+                app:forceKeyboard="false"
+                app:inputType="number"
+                app:password="false"
+                app:pinBackground="@drawable/otpview_drawable"
+                app:pinHeight="@dimen/_25sdp"
+                app:pinLength="6"
+                app:pinWidth="@dimen/_25sdp" />
+
+            <LinearLayout
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:id="@+id/lnrActionss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pinview">
+
+                <TextView
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="00:59" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="Resend" />
+            </LinearLayout>
+
+
+            <TextView
+              android:layout_marginTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+              android:layout_marginStart="@dimen/_80sdp"
+                android:layout_marginEnd="@dimen/_80sdp"
+                style="@style/AppTextViewNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lnrActionss"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/rect_button_red_bg"
+                android:gravity="center"
+
+                android:text="Send"
+                android:textColor="@color/white" />
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

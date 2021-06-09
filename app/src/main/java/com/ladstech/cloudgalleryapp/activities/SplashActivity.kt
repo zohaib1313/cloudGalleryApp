@@ -5,19 +5,24 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.ladstech.cloudgalleryapp.R
 import com.ladstech.cloudgalleryapp.databinding.ActivitySplashBinding
+
 
 import com.ladstech.cloudgalleryapp.fragments.LoginFragment
 import com.ladstech.cloudgalleryapp.fragments.ProfileFragmentF
 import com.ladstech.cloudgalleryapp.fragments.WelcomFragment
+import com.ladstech.cloudgalleryapp.utils.AppConstant
 import com.ladstech.cloudgalleryapp.utils.Helper
 
 
@@ -83,7 +88,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         ////swipe to change
-      //  mBinding.pager.isUserInputEnabled = false
+        //  mBinding.pager.isUserInputEnabled = false
         mBinding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
@@ -105,11 +110,54 @@ class SplashActivity : AppCompatActivity() {
         })
 
         //Bind the title indicator to the adapter
-        mBinding.indicator.setViewPager(mBinding.pager)
+//        mBinding.indicator.setViewPager(mBinding.pager)
+        mBinding.dots.setViewPager2(mBinding.pager)
     }
 
     private fun onPageStatChanged() {
+        when {
+            isFirstPage() -> {
 
+                mBinding.dots.setDotIndicatorColor(ContextCompat.getColor(this, R.color.white))
+                mBinding.dots.setStrokeDotsIndicatorColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.white
+                    )
+                )
+
+                mBinding.btnGetStarted.text=""
+
+
+            }
+            isLastPage() -> {
+                mBinding.dots.setDotIndicatorColor(ContextCompat.getColor(this, R.color.white))
+                mBinding.dots.setStrokeDotsIndicatorColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.white
+                    )
+                )
+                mBinding.btnGetStarted.text="Let's Start"
+            }
+            else -> {
+                mBinding.dots.setDotIndicatorColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.app_color_blue
+                    )
+                )
+                mBinding.dots.setStrokeDotsIndicatorColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.app_color_blue
+                    )
+                )
+                mBinding.btnGetStarted.text="Next"
+
+
+            }
+        }
     }
 
     private fun gotoNextPage() {

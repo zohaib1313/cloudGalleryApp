@@ -78,11 +78,12 @@
                 app:ccp_showFlag="true"
                 app:ccp_textSize="14dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <EditText
                 android:id="@+id/etPhoneNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                style="@style/AppTextInputEditTextNoDrawable"
 
                 android:layout_weight="2"
                 android:digits="0123456789"
@@ -99,5 +100,7 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

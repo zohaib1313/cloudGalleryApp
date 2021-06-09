@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CloudGalleryApp">
         <activity android:name=".activities.BlockedUserActivity"></activity>
-        <activity android:name=".activities.PostDetailActivity" />
+        <activity android:name=".activities.PostDetailActivity" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+          />
         <activity android:name=".activities.HomeActivity" />
         <activity android:name=".activities.AddPostActivity" />
         <activity android:name=".activities.GalleryAppHome" />

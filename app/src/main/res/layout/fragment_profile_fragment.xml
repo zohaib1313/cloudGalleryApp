@@ -6,10 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:fitsSystemWindows="true"
-    android:windowSoftInputMode="adjustResize|adjustPan"
     android:fillViewport="true"
-    >
+    android:fitsSystemWindows="true"
+    android:windowSoftInputMode="adjustResize|adjustPan">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/_12sdp"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:tint="@color/white" />
 
             <TextView
 
@@ -85,12 +85,12 @@
         </RelativeLayout>
 
         <EditText
-            android:layout_marginTop="@dimen/_26sdp"
             android:id="@+id/editTextTextPersonName"
-            style="@style/AppTextViewNormal"
+            style="@style/AppTextInputEditTextNoDrawable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_26sdp"
+            android:layout_marginTop="@dimen/_26sdp"
             android:layout_marginEnd="@dimen/_26sdp"
             android:background="@drawable/rounded_button_white"
             android:gravity="start"
@@ -105,21 +105,24 @@
 
         <TextView
             android:id="@+id/textView5"
-            style="@style/AppTextViewBold"
+            style="@style/AppTextViewNormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-       android:layout_marginTop="@dimen/_26sdp"
+            android:layout_marginTop="@dimen/_26sdp"
             android:text="Private Account"
-            android:textColor="@color/grey"
+
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:theme="@style/SCBSwitch"
-            android:checked="true"
             android:id="@+id/switch1"
+            android:theme="@style/SCBSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
+
+            android:thumb="@drawable/custom_thumb"
             app:layout_constraintBottom_toBottomOf="@+id/textView5"
             app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
             app:layout_constraintTop_toTopOf="@+id/textView5" />

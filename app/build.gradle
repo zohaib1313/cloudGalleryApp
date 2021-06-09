@@ -167,12 +167,13 @@ dependencies {
     implementation 'com.github.zawadz88.materialpopupmenu:material-popup-menu:4.1.0'
 
 
-    //staggered Recycler view implementation 'com.github.devta-D:StaggeredGridView:v1.0'
-    implementation 'com.github.devta-D:StaggeredGridView:v1.0'
-
 
 //splash screen pins
-    implementation 'me.relex:circleindicator:2.1.6'
+
+     implementation 'com.tbuonomo:dotsindicator:4.2'
+
+
+
     //circle imageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 //pin view otp https://github.com/GoodieBag/Pinview

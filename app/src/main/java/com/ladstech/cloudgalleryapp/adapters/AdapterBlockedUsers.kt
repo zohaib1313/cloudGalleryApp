@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.row_posts.view.*
 
 class AdapterBlockedUsers(
     var mContext: Context,
-    var dataList: List<BlockedUsers>
+    var dataList: List<Int>
 ) :
     RecyclerView.Adapter<AdapterBlockedUsers.MyViewHolder>() {
 
@@ -56,10 +56,14 @@ class AdapterBlockedUsers(
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return dataList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        with(holder){
+            binding.shapeableImageView.setImageDrawable(mContext.getDrawable(dataList[position]))
+        }
+
 //        with(holder) {
 //            with(dataList[position]) {
 //
@@ -108,6 +112,7 @@ class AdapterBlockedUsers(
 //
 //            }
 //        }
+
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
