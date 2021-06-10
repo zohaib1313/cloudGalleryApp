@@ -6,13 +6,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import com.ladstech.cloudgalleryapp.R
 import com.ladstech.cloudgalleryapp.databinding.FragmentLoginBinding
-import java.util.*
 
 
 class LoginFragment : BaseFragment() {
@@ -37,7 +33,7 @@ class LoginFragment : BaseFragment() {
 
 
         val layout = activity.layoutInflater.inflate(
-            R.layout.verify_otp_layout,
+            R.layout.send_request_layout,
             activity.findViewById(R.id.container)
         )
         val dialog = AlertDialog.Builder(activity)

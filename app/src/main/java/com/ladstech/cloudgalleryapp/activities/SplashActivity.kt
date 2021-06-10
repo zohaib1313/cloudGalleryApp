@@ -27,6 +27,8 @@ import com.ladstech.cloudgalleryapp.utils.Helper
 
 
 import com.ladstech.cloudgalleryapp.utils.SessionManager
+import com.zhpan.indicator.enums.IndicatorSlideMode
+import com.zhpan.indicator.enums.IndicatorStyle
 import kotlinx.android.synthetic.main.activity_splash.*
 
 private const val NUM_PAGES = 3
@@ -111,50 +113,76 @@ class SplashActivity : AppCompatActivity() {
 
         //Bind the title indicator to the adapter
 //        mBinding.indicator.setViewPager(mBinding.pager)
-        mBinding.dots.setViewPager2(mBinding.pager)
+       // mBinding.dots.setViewPager2(mBinding.pager)
+        mBinding.dots.apply {
+            setSliderColor(ContextCompat.getColor(this@SplashActivity,R.color.grey), ContextCompat.getColor(this@SplashActivity,R.color.white))
+            setSliderWidth(resources.getDimension(R.dimen._8sdp))
+            setSliderHeight(resources.getDimension(R.dimen._8sdp))
+            setSlideMode(IndicatorSlideMode.WORM)
+            setIndicatorStyle(IndicatorStyle.CIRCLE)
+            setPageSize(mBinding.pager!!.adapter!!.itemCount)
+            setupWithViewPager(mBinding.pager)
+            notifyDataChanged()
+        }
     }
 
     private fun onPageStatChanged() {
         when {
             isFirstPage() -> {
 
-                mBinding.dots.setDotIndicatorColor(ContextCompat.getColor(this, R.color.white))
-                mBinding.dots.setStrokeDotsIndicatorColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.white
+//                mBinding.dots.selectedDotColor=(ContextCompat.getColor(this, R.color.white))
+////                mBinding.dots.setStrokeDotsIndicatorColor(
+////                    ContextCompat.getColor(
+////                        this,
+////                        R.color.white
+////                    )
+////                )
+
+                    mBinding.btnGetStarted.text=""
+
+                mBinding.dots.apply {
+                    setSliderColor(
+                        ContextCompat.getColor(this@SplashActivity, R.color.grey),
+                        ContextCompat.getColor(this@SplashActivity, R.color.white)
                     )
-                )
-
-                mBinding.btnGetStarted.text=""
-
-
+                }
             }
             isLastPage() -> {
-                mBinding.dots.setDotIndicatorColor(ContextCompat.getColor(this, R.color.white))
-                mBinding.dots.setStrokeDotsIndicatorColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.white
+             //   mBinding.dots.selectedDotColor=(ContextCompat.getColor(this, R.color.white))
+//                mBinding.dots.setStrokeDotsIndicatorColor(
+//                    ContextCompat.getColor(
+//                        this,
+//                        R.color.white
+//                    )
+//                )
+                mBinding.dots.apply {
+                    setSliderColor(
+                        ContextCompat.getColor(this@SplashActivity, R.color.grey),
+                        ContextCompat.getColor(this@SplashActivity, R.color.white)
                     )
-                )
+                }
                 mBinding.btnGetStarted.text="Let's Start"
             }
             else -> {
-                mBinding.dots.setDotIndicatorColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.app_color_blue
-                    )
-                )
-                mBinding.dots.setStrokeDotsIndicatorColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.app_color_blue
-                    )
-                )
+//                mBinding.dots.selectedDotColor=(
+//                    ContextCompat.getColor(
+//                        this,
+//                        R.color.app_color_blue
+//                    )
+//                )
+//                mBinding.dots.setStrokeDotsIndicatorColor(
+//                    ContextCompat.getColor(
+//                        this,
+//                        R.color.app_color_blue
+//                    )
+//                )
                 mBinding.btnGetStarted.text="Next"
-
+                mBinding.dots.apply {
+                    setSliderColor(
+                        ContextCompat.getColor(this@SplashActivity, R.color.grey),
+                        ContextCompat.getColor(this@SplashActivity, R.color.app_color_blue)
+                    )
+                }
 
             }
         }

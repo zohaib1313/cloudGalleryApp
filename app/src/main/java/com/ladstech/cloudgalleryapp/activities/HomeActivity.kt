@@ -1,15 +1,14 @@
 package com.ladstech.cloudgalleryapp.activities
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.PopupWindow
-import android.widget.Toast
-import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +36,7 @@ class HomeActivity : BaseActivity() {
 //        noDataFoundLayout = mBinding.noDataLayout.noDataChild
 
         mBinding.ivNav.setOnClickListener { openLeftMenu() }
-        mBinding.navContent.rlBlockedUsers.setOnClickListener {
+        mBinding.navContent.btnBlockedUser.setOnClickListener {
             openLeftMenu()
             Helper.startActivity(
                 this@HomeActivity,
@@ -45,10 +44,48 @@ class HomeActivity : BaseActivity() {
                 false
             )
         }
-        mBinding.navContent.rlShareApp.setOnClickListener { }
-        mBinding.navContent.rlRateApp.setOnClickListener { }
+        mBinding.navContent.btnSendRequest.setOnClickListener {
+            openLeftMenu()
+            showCustomAppAlert(this, R.layout.send_request_layout)
+        }
+        mBinding.navContent.btnAcceptRequst.setOnClickListener {
+            openLeftMenu()
+            showCustomAppAlert(this, R.layout.accept_request_layout)
+        }
+        mBinding.navContent.btnVerifyOtp.setOnClickListener {
+            openLeftMenu()
+            showCustomAppAlert(this, R.layout.verify_otp_layout)
+        }
+
         setUpPopWindow()
         initRv()
+
+
+    }
+
+    fun showCustomAppAlert(activity: Activity, view: Int) {
+
+        val layout = this.layoutInflater.inflate(
+            view,
+            this.findViewById(R.id.container)
+        )
+        val dialog = AlertDialog.Builder(activity)
+            .setView(layout)
+            .create()
+        //  val layoutParams = dialog.window!!.attributes
+        //  layoutParams.y = 160 // top margin
+        //dialog.window!!.attributes = layoutParams
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        // dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        // dialog.window!!.setGravity(Gravity.TOP)
+        dialog.show()
+//        val timer2 = Timer()
+//        timer2.schedule(object : TimerTask() {
+//            override fun run() {
+//                dialog.dismiss()
+//                timer2.cancel() //this will cancel the timer of the system
+//            }
+//        }, 2000)
     }
 
     private fun setUpPopWindow() {

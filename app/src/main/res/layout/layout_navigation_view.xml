@@ -14,53 +14,82 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/_25sdp">
 
-        <RelativeLayout
-            android:id="@+id/rlBlockedUsers"
+        <ScrollView
+            android:scrollbars="none"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <TextView
-                style="@style/AppTextViewNormal"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/user"
-                android:drawablePadding="@dimen/_25sdp"
-                android:padding="@dimen/_8sdp"
-                android:text="Blocked Users"
-                android:textColor="@color/black" />
-        </RelativeLayout>
+                android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rlShareApp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/btnBlockedUser"
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/user"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Blocked Users"
+                    android:textColor="@color/black" />
 
-            <TextView
-                style="@style/AppTextViewNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_baseline_star_24"
-                android:drawablePadding="@dimen/_25sdp"
-                android:padding="@dimen/_8sdp"
-                android:text="Share App"
-                android:textColor="@color/black" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/btnShareApp"
 
-        <RelativeLayout
-            android:id="@+id/rlRateApp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_star_24"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Share App"
+                    android:textColor="@color/black" />
 
-            <TextView
-                style="@style/AppTextViewNormal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_baseline_share_24"
-                android:drawablePadding="@dimen/_25sdp"
-                android:padding="@dimen/_8sdp"
-                android:text="Rate App"
-                android:textColor="@color/black" />
-        </RelativeLayout>
+                <TextView
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_share_24"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Rate App"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/btnVerifyOtp"
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_share_24"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Verify otp"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/btnAcceptRequst"
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_share_24"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Accept Request"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/btnSendRequest"
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_share_24"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Send Request"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+        </ScrollView>
 
 
     </LinearLayout>

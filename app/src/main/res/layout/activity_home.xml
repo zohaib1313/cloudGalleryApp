@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/rlHeader"
-         android:layout_marginBottom="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_50sdp"
             tools:listitem="@layout/row_posts" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,16 +59,18 @@
             android:layout_height="@dimen/_100sdp"
             android:layout_alignParentBottom="true"
             android:background="@color/transparent"
-            android:clickable="false"
-         >
+            android:clickable="false">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:elevation="@dimen/_1sdp"
+                app:civ_border="true"
+                app:civ_border_width="@dimen/_6sdp"
+                app:civ_border_color="@color/alpha_white"
                 android:src="@drawable/ic_baseline_add_24"
                 android:tint="@color/black"
-                app:backgroundTint="@color/white"
+                app:civ_circle_color="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
