@@ -1,20 +1,24 @@
 package com.ladstech.cloudgalleryapp.adapters
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.datastore.generated.model.Posts
 
 import com.appseen.contacts.sharing.app.callBacks.OnItemClickListener
+import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler
+import com.ladstech.cloudgalleryapp.R
 
 import com.ladstech.cloudgalleryapp.databinding.RowPostsBinding
 
 import kotlinx.android.synthetic.main.row_posts.view.*
-
 
 
 class AdapterPosts(
@@ -35,6 +39,7 @@ class AdapterPosts(
             binding.root.ivUser.setOnClickListener(this)
             binding.root.imageView5.setOnClickListener(this)
 
+
         }
 
         override fun onClick(view: View) {
@@ -42,7 +47,7 @@ class AdapterPosts(
                 mOnItemClickListener?.onItemClick(
                     view,
                     adapterPosition,
-                   ""
+                    ""
                 )
             }
         }
@@ -58,6 +63,7 @@ class AdapterPosts(
         return 10
     }
 
+    @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 //        with(holder) {
 //            with(dataList[position]) {
@@ -107,6 +113,22 @@ class AdapterPosts(
 //
 //            }
 //        }
+
+
+//        holder!!.binding.btnMorePost!!.setOnClickListener {
+//            val popup = PopupMenu(mContext, holder.binding.btnMorePost)
+//            popup.inflate(R.menu.menu_f)
+//            popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
+//                override fun onMenuItemClick(p0: MenuItem?): Boolean {
+//                    Log.e(">>",p0.toString())
+//                    return true
+//                }
+//
+//            })
+//            popup.show();
+//        }
+
+
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {

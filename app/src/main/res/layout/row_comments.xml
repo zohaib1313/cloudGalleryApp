@@ -10,12 +10,12 @@
 
     <RelativeLayout
         android:id="@+id/card"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp">
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp">
 
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:layout_width="@dimen/_36sdp"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:src="@drawable/flag_transparent"
             app:civ_border="true"
             app:civ_border_color="@color/grey"
@@ -23,8 +23,8 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
 
-            android:layout_width="@dimen/_36sdp"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_margin="@dimen/_2sdp"
             android:src="@drawable/flag_aland"
             app:civ_border="true"
@@ -45,8 +45,8 @@
         android:maxLines="1"
         android:paddingStart="@dimen/_4sdp"
         android:text="John Doe"
-        android:textColor="@color/grey"
-        android:textSize="@dimen/_13sdp" />
+        android:textColor="@color/app_color_blue"
+        android:textSize="@dimen/_11sdp" />
 
     <TextView
         android:layout_margin="@dimen/_4sdp"
@@ -57,17 +57,18 @@
         android:layout_below="@+id/tvPersonName"
         android:layout_toEndOf="@+id/card"
         android:gravity="start"
-        android:paddingStart="@dimen/_4sdp"
         android:text="John Doe"
-        android:textColor="@color/grey"
-        android:textSize="@dimen/_14sdp" />
+        android:textColor="@color/app_color_blue"
+        android:textSize="@dimen/_12sdp" />
 
-    <ImageView
+    <ToggleButton
         android:layout_width="@dimen/_18sdp"
         android:layout_height="@dimen/_18sdp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_baseline_favorite_24"
-        app:tint="@color/red" />
+        android:background="@drawable/toggle_selector"
+        android:textOff=""
+        android:textOn=""
+   />
 
 </RelativeLayout>

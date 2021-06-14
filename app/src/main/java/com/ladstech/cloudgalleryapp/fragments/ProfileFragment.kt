@@ -24,10 +24,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.ladstech.cloudgalleryapp.R
 import com.ladstech.cloudgalleryapp.activities.GalleryAppHome
 import com.ladstech.cloudgalleryapp.activities.MainActivity
+import com.ladstech.cloudgalleryapp.callBacks.MessageEvent
 import com.ladstech.cloudgalleryapp.databinding.FragmentProfileBinding
 import com.ladstech.cloudgalleryapp.utils.AppConstant
 import com.ladstech.cloudgalleryapp.utils.AppConstant.Companion.TAG
 import com.ladstech.cloudgalleryapp.utils.Helper
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 
 
@@ -43,10 +47,6 @@ class ProfileFragment() : BaseFragment() {
 
 
     lateinit var userPhoneNumber: String
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -369,75 +369,6 @@ class ProfileFragment() : BaseFragment() {
             }
 
         }, { error -> printLog("error while finding user $error") })
-
-
-//        Amplify.DataStore.query(UserCloudGallery::class.java, Where.id(userPhoneNumber),
-//            { matches ->
-//                if (matches.hasNext()) {
-//                    val user = matches.next()
-//                    ThreadUtils.runOnUiThread {
-//                        mBinding.textView3.setText(user.name)
-//                        mBinding.etAbout.setText(user.about)
-//                        Glide.with(requireContext()).load(Helper.getImageUrl(user.image))
-//                        isUserFound = true
-//                        printLog("user found")
-//                        sessionManager.createUserLoginSession(user)
-//                        Helper.startActivity(
-//                            requireActivity(),
-//                            Intent(requireContext(), MainActivity::class.java),
-//                            true
-//                        );
-//                    }
-//                }
-//
-//                hideLoading()
-//            },
-//            { Log.e(TAG, "Query failed", it) }
-//        )
-
-//        Amplify.DataStore.query(
-//            UserCloudGallery::class.java,
-//            { Users ->
-//                while (Users.hasNext()) {
-//                    val user = Users.next()
-//
-//                    if (user.phone == userPhoneNumber) {
-//
-//                        try {
-//                            ThreadUtils.runOnUiThread {
-//                                mBinding.textView3.setText(user.name)
-//                                mBinding.etAbout.setText(user.about)
-//                                Glide.with(requireContext()).load(Helper.getImageUrl(user.image))
-//                                isUserFound = true
-//                                printLog("user found")
-//                                sessionManager.createUserLoginSession(user)
-//                                Helper.startActivity(
-//                                    requireActivity(),
-//                                    Intent(requireContext(), MainActivity::class.java),
-//                                    true
-//                                );
-//                            }
-//
-//                        } catch (e: Exception) {
-//
-//                        }
-//                        return@query
-//                    }
-//
-//
-//                }
-//
-//            },
-//            {
-//                Log.e(AppConstant.TAG, "Query failed for posts", it)
-//                ThreadUtils.runOnUiThread {
-//
-//                    hideLoading()
-//                }
-//            }
-//        )
-
-
         hideLoading()
 
     }
@@ -450,6 +381,16 @@ class ProfileFragment() : BaseFragment() {
         if (needToAddBackstack) mFragmentTransaction.addToBackStack(null)
         mFragmentTransaction.commit()
     }
+
+
+
+
+
+
+
+
+
+
 
 }
 

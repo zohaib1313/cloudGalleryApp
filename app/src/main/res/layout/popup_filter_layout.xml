@@ -1,30 +1,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_button_white"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:paddingStart="@dimen/_8sdp"
+    android:paddingTop="@dimen/_16sdp"
+    android:layout_marginStart="@dimen/_20sdp"
+    android:layout_marginEnd="@dimen/_20sdp"
+    android:paddingEnd="@dimen/_8sdp"
+    android:paddingBottom="@dimen/_16sdp">
 
     <ImageView
         android:id="@+id/ivLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_4sdp"
-        android:src="@drawable/flag_peru" />
+        android:src="@drawable/like" />
 
     <ImageView
         android:id="@+id/ivComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_4sdp"
-        android:src="@drawable/flag_peru" />
+     android:layout_marginTop="@dimen/_12sdp"
+        android:src="@drawable/comment" />
 
     <ImageView
         android:id="@+id/ivShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_4sdp"
-        android:src="@drawable/flag_peru" />
+        android:layout_marginTop="@dimen/_12sdp"
+        android:src="@drawable/share" />
 
 </LinearLayout>

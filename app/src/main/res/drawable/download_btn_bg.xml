@@ -9,7 +9,7 @@
         android:topRightRadius="@dimen/_8sdp"
 
         />
-    <solid android:color="@color/red" />
+    <solid android:color="@color/app_color_yellow" />
 
 
 </shape>

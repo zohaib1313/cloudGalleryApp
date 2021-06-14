@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
+    android:id="@+id/containerOtp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:elevation="@dimen/_26sdp"
         app:cardCornerRadius="@dimen/_14sdp">
 
@@ -34,7 +34,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:scaleType="fitXY"
-                android:src="@drawable/c" />
+                android:src="@drawable/otp" />
 
             <TextView
                 android:id="@+id/title"
@@ -49,32 +49,210 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
-            <com.goodiebag.pinview.Pinview
+            <LinearLayout
                 android:id="@+id/pinview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:elevation="14dp"
-                android:textColor="@color/white"
-                app:cursorVisible="true"
-                app:forceKeyboard="false"
-                app:inputType="number"
-                app:password="false"
-                app:pinBackground="@drawable/otpview_drawable"
-                app:pinHeight="@dimen/_25sdp"
-                app:pinLength="6"
-                app:pinWidth="@dimen/_25sdp" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:textColor="@color/white">
+
+                <soup.neumorphism.NeumorphCardView
+                    style="@style/Widget.Neumorph.CardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:neumorph_backgroundColor="@color/white"
+                    app:neumorph_inset="1dp"
+                    app:neumorph_insetBottom="14dp"
+                    app:neumorph_insetEnd="8dp"
+                    app:neumorph_insetStart="8dp"
+                    app:neumorph_insetTop="14dp"
+                    app:neumorph_lightSource="leftTop"
+                    app:neumorph_shadowColorDark="@color/app_color_gray23"
+                    app:neumorph_shadowColorLight="@color/white"
+
+                    app:neumorph_shadowElevation="@dimen/_3sdp"
+                    app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                    app:neumorph_strokeColor="@color/app_color_gray2"
+                    app:neumorph_strokeWidth="0.5px">
+
+                    <EditText
+                        android:id="@+id/et1"
+                        style="@style/AppTextInputEditTextNoDrawable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="x"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:padding="@dimen/_8sdp" />
+                </soup.neumorphism.NeumorphCardView>
+
+                <soup.neumorphism.NeumorphCardView
+                    style="@style/Widget.Neumorph.CardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:neumorph_backgroundColor="@color/white"
+                    app:neumorph_inset="1dp"
+                    app:neumorph_insetBottom="14dp"
+                    app:neumorph_insetEnd="8dp"
+                    app:neumorph_insetStart="8dp"
+                    app:neumorph_insetTop="14dp"
+                    app:neumorph_lightSource="leftTop"
+                    app:neumorph_shadowColorDark="@color/app_color_gray23"
+                    app:neumorph_shadowColorLight="@color/white"
+
+                    app:neumorph_shadowElevation="@dimen/_3sdp"
+                    app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                    app:neumorph_strokeColor="@color/app_color_gray2"
+                    app:neumorph_strokeWidth="0.5px">
+
+                    <EditText
+                        android:id="@+id/et2"
+                        style="@style/AppTextInputEditTextNoDrawable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="x"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:padding="@dimen/_8sdp" />
+                </soup.neumorphism.NeumorphCardView>
+
+                <soup.neumorphism.NeumorphCardView
+                    style="@style/Widget.Neumorph.CardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:neumorph_backgroundColor="@color/white"
+                    app:neumorph_inset="1dp"
+                    app:neumorph_insetBottom="14dp"
+                    app:neumorph_insetEnd="8dp"
+                    app:neumorph_insetStart="8dp"
+                    app:neumorph_insetTop="14dp"
+                    app:neumorph_lightSource="leftTop"
+                    app:neumorph_shadowColorDark="@color/app_color_gray23"
+                    app:neumorph_shadowColorLight="@color/white"
+
+                    app:neumorph_shadowElevation="@dimen/_3sdp"
+                    app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                    app:neumorph_strokeColor="@color/app_color_gray2"
+                    app:neumorph_strokeWidth="0.5px">
+
+                    <EditText
+                        android:id="@+id/et3"
+                        style="@style/AppTextInputEditTextNoDrawable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="x"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:padding="@dimen/_8sdp" />
+                </soup.neumorphism.NeumorphCardView>
+
+                <soup.neumorphism.NeumorphCardView
+                    style="@style/Widget.Neumorph.CardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:neumorph_backgroundColor="@color/white"
+                    app:neumorph_inset="1dp"
+                    app:neumorph_insetBottom="14dp"
+                    app:neumorph_insetEnd="8dp"
+                    app:neumorph_insetStart="8dp"
+                    app:neumorph_insetTop="14dp"
+                    app:neumorph_lightSource="leftTop"
+                    app:neumorph_shadowColorDark="@color/app_color_gray23"
+                    app:neumorph_shadowColorLight="@color/white"
+
+                    app:neumorph_shadowElevation="@dimen/_3sdp"
+                    app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                    app:neumorph_strokeColor="@color/app_color_gray2"
+                    app:neumorph_strokeWidth="0.5px">
+
+                    <EditText
+                        android:id="@+id/et4"
+                        style="@style/AppTextInputEditTextNoDrawable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="x"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:padding="@dimen/_8sdp" />
+                </soup.neumorphism.NeumorphCardView>
+
+                <soup.neumorphism.NeumorphCardView
+                    style="@style/Widget.Neumorph.CardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:neumorph_backgroundColor="@color/white"
+                    app:neumorph_inset="1dp"
+                    app:neumorph_insetBottom="14dp"
+                    app:neumorph_insetEnd="8dp"
+                    app:neumorph_insetStart="8dp"
+                    app:neumorph_insetTop="14dp"
+                    app:neumorph_lightSource="leftTop"
+                    app:neumorph_shadowColorDark="@color/app_color_gray23"
+                    app:neumorph_shadowColorLight="@color/white"
+
+                    app:neumorph_shadowElevation="@dimen/_3sdp"
+                    app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                    app:neumorph_strokeColor="@color/app_color_gray2"
+                    app:neumorph_strokeWidth="0.5px">
+
+                    <EditText
+                        android:id="@+id/et5"
+                        style="@style/AppTextInputEditTextNoDrawable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="x"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:padding="@dimen/_8sdp" />
+                </soup.neumorphism.NeumorphCardView>
+
+                <soup.neumorphism.NeumorphCardView
+                    style="@style/Widget.Neumorph.CardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:neumorph_backgroundColor="@color/white"
+                    app:neumorph_inset="1dp"
+                    app:neumorph_insetBottom="14dp"
+                    app:neumorph_insetEnd="8dp"
+                    app:neumorph_insetStart="8dp"
+                    app:neumorph_insetTop="14dp"
+                    app:neumorph_lightSource="leftTop"
+                    app:neumorph_shadowColorDark="@color/app_color_gray23"
+                    app:neumorph_shadowColorLight="@color/white"
+
+                    app:neumorph_shadowElevation="@dimen/_3sdp"
+                    app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                    app:neumorph_strokeColor="@color/app_color_gray2"
+                    app:neumorph_strokeWidth="0.5px">
+
+                    <EditText
+                        android:id="@+id/et6"
+                        style="@style/AppTextInputEditTextNoDrawable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="x"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:padding="@dimen/_8sdp" />
+                </soup.neumorphism.NeumorphCardView>
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/lnrActionss"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pinview"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp">
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp">
 
                 <TextView
+                    android:id="@+id/countDown"
                     style="@style/AppTextViewNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,17 +266,19 @@
                     android:layout_weight="1" />
 
                 <TextView
-
+                    android:visibility="gone"
+                    android:id="@+id/btnResendCode"
                     style="@style/AppTextViewNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="Resend" />
+                    android:text="@string/resend" />
             </LinearLayout>
 
 
             <TextView
+                android:id="@+id/btnVerifyOtpDlg"
                 style="@style/AppTextViewNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +287,7 @@
                 android:layout_marginStart="@dimen/_80sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_80sdp"
-                android:background="@drawable/rect_button_red_bg"
+                android:background="@drawable/rect_btn_blue_bg"
                 android:gravity="center"
                 android:paddingTop="@dimen/_6sdp"
                 android:paddingBottom="@dimen/_6sdp"

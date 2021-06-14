@@ -126,7 +126,6 @@ class FragmentLoginRegisterHammad : Fragment() {
                 mVerificationId = verificationId
                 forceResendingToken = token
                 progressDialog.dismiss()
-
                 phoneLinearLayout.visibility = View.GONE
                 otpLinearLayout.visibility = View.VISIBLE
 

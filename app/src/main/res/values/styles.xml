@@ -6,12 +6,12 @@
     </style>
 
     <style name="AppTextViewBold">
-
+        <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:lineSpacingExtra">@dimen/_4sdp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textSize">@dimen/_17sdp</item>
 
 
     </style>
@@ -20,7 +20,7 @@
         <item name="neumorph_shadowElevation">0dp</item>
         <item name="android:layout_marginStart">@dimen/_8sdp</item>
         <item name="android:layout_marginEnd">@dimen/_8sdp</item>
-        <item name="neumorph_shadowColorDark">@color/red</item>
+        <item name="neumorph_shadowColorDark">@color/app_color_yellow</item>
         <item name="neumorph_shadowColorLight">@color/brickRed</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_height">wrap_content</item>
@@ -36,7 +36,7 @@
     </style>
 
     <style name="AppTextViewNormal">
-
+        <item name="android:fontFamily">@font/nunito</item>
         <item name="android:gravity">center</item>
         <item name="android:lineSpacingExtra">@dimen/_4sdp</item>
         <item name="android:textColor">@color/app_color_gray</item>
@@ -68,7 +68,16 @@
         <item name="android:windowContentOverlay">@null</item>
 
     </style>
+    <style name="CustomShapeAppearance">
+        <item name="neumorph_cornerFamily">rounded</item>
+        <item name="neumorph_cornerSize">@dimen/_26sdp</item>
 
+        <!-- Or if wants different radii depending on the corner. -->
+        <item name="neumorph_cornerSizeTopLeft">@dimen/_6sdp</item>
+        <item name="neumorph_cornerSizeTopRight">@dimen/_6sdp</item>
+        <item name="neumorph_cornerSizeBottomLeft">@dimen/_6sdp</item>
+        <item name="neumorph_cornerSizeBottomRight">@dimen/_6sdp</item>
+    </style>
     <style name="roundButtonWhite" parent="@style/Base.Theme.Neumorph.Light">
 
         <item name="android:gravity">center</item>
@@ -81,8 +90,7 @@
 
     <style name="SCBSwitch" parent="Theme.AppCompat.Light">
 
-        <item name="colorControlActivated">@color/red</item>
-
+        <item name="colorControlActivated">@color/app_color_yellow</item>
 
         <item name="colorSwitchThumbNormal">@color/grey</item>
 
@@ -104,8 +112,17 @@
     </style>
 
     <style name="popupMenuStyle" parent="@android:style/Widget.PopupMenu">
-        <item name="android:textColor">@color/red</item>
-        <item name="iconTint">@color/red</item>
+        <item name="android:textColor">@color/app_color_yellow</item>
+        <item name="iconTint">@color/app_color_yellow</item>
         <item name="android:popupBackground">@drawable/rounded_button_white</item>
+    </style>
+
+    <style name="Widget.Theme.CloudGalleryApp.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Widget.Theme.CloudGalleryApp.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 </resources>

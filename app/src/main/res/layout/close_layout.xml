@@ -9,58 +9,40 @@
     android:background="@color/transparent"
     android:gravity="center">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
-        android:paddingTop="@dimen/_35sdp">
-
-
         <androidx.cardview.widget.CardView
+            android:layout_margin="@dimen/_8sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivUser"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_minus30sdp"
             app:cardCornerRadius="@dimen/_12sdp"
-            app:cardElevation="0dp"
-            app:neumorph_backgroundColor="@color/white">
+            app:cardElevation="0dp">
 
             <RelativeLayout
+                android:paddingBottom="@dimen/_16sdp"
+                android:paddingTop="@dimen/_16sdp"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tvName"
+
+                    android:id="@+id/tvMsg"
                     style="@style/AppTextViewBold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_45sdp"
                     android:gravity="center"
-                    android:text="Name"
-                    android:textColor="@color/grey" />
-
-                <TextView
-                    android:id="@+id/tvMsg"
-                    style="@style/AppTextViewNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvName"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:gravity="center"
-                    android:text="Do You Want To Accept \n This Request?"
+                    android:textSize="@dimen/_16sdp"
+                    android:text="Do You Want To Exit..?"
                     android:textColor="@color/grey" />
 
                 <LinearLayout
+                    android:layout_margin="@dimen/_12sdp"
                     style="@style/AppTextViewBold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvMsg"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:gravity="center">
 
 
@@ -69,25 +51,35 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/app_color_yellow"
+                        android:background="@drawable/bg_btn_decline"
                         android:gravity="center"
-                        android:paddingTop="@dimen/_12sdp"
-                        android:paddingBottom="@dimen/_12sdp"
-                        android:text="Decline"
-                        android:textColor="@color/white" />
+                        android:paddingTop="@dimen/_6sdp"
+                        android:paddingBottom="@dimen/_6sdp"
+                        android:paddingStart="@dimen/_20sdp"
+                        android:paddingEnd="@dimen/_20sdp"
+                        android:text="No"
+                        android:textColor="@color/app_color_yellow" />
+                    <TextView
+                        style="@style/AppTextViewBold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        />
+
 
                     <TextView
                         style="@style/AppTextViewBold"
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:layout_weight="1"
-                        android:background="@color/app_color_blue"
+                        android:background="@drawable/bg_btn_accept"
                         android:gravity="center"
-                        android:paddingTop="@dimen/_12sdp"
-                        android:paddingBottom="@dimen/_12sdp"
-                        android:text="Accept"
+                        android:paddingTop="@dimen/_6sdp"
+                        android:paddingBottom="@dimen/_6sdp"
+                        android:paddingStart="@dimen/_20sdp"
+                        android:paddingEnd="@dimen/_20sdp"
+                        android:text="Yes"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
@@ -98,15 +90,9 @@
 
         </androidx.cardview.widget.CardView>
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/ivUser"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/flag_haiti" />
 
-    </RelativeLayout>
+
+
 
 
 </RelativeLayout>

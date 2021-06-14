@@ -57,10 +57,11 @@ public class SquareImageView extends androidx.appcompat.widget.AppCompatImageVie
             return;
         }
 
-        int w = getWidth();
+
 
         Bitmap roundBitmap = getRoundedCroppedBitmap(cropBitmap(temporaryBitmap), getWidth(), getHeight());
-        canvas.drawBitmap(roundBitmap, 0, 0, null);
+       canvas.drawBitmap(roundBitmap, 0, 0, null);
+        //canvas.drawBitmap(roundBitmap, null, new RectF(0, 0, getWidth(), getHeight()), null);
     }
 
     private Bitmap getBitmapResource() {
@@ -102,6 +103,10 @@ public class SquareImageView extends androidx.appcompat.widget.AppCompatImageVie
 //        }
         finalBitmap = Bitmap.createScaledBitmap(bitmap, width/2, height/3, true);
  //finalBitmap=tr
+
+       // finalBitmap = bitmap;
+
+
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(output);
 

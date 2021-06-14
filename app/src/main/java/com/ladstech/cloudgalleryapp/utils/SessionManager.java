@@ -62,6 +62,7 @@ public class SessionManager {
     public void clearSession() {
         editor.clear();
         getSPManager().put(AppConstant.IS_VISITED_INTRO, true);
+        editor.putBoolean(AppConstant.KEY_IS_LOGGED_IN, false);
         editor.commit();
 
     }

@@ -25,16 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/btnBlockedUser"
-                    style="@style/AppTextViewNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/user"
-                    android:drawablePadding="@dimen/_25sdp"
-                    android:padding="@dimen/_8sdp"
-                    android:text="Blocked Users"
-                    android:textColor="@color/black" />
+
 
                 <TextView
                     android:id="@+id/btnShareApp"
@@ -42,7 +33,7 @@
                     style="@style/AppTextViewNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_baseline_star_24"
+                    android:drawableStart="@drawable/share_app"
                     android:drawablePadding="@dimen/_25sdp"
                     android:padding="@dimen/_8sdp"
                     android:text="Share App"
@@ -52,7 +43,7 @@
                     style="@style/AppTextViewNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_baseline_share_24"
+                    android:drawableStart="@drawable/rate"
                     android:drawablePadding="@dimen/_25sdp"
                     android:padding="@dimen/_8sdp"
                     android:text="Rate App"
@@ -86,6 +77,26 @@
                     android:drawablePadding="@dimen/_25sdp"
                     android:padding="@dimen/_8sdp"
                     android:text="Send Request"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/btnCloseApp"
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_share_24"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Close App"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/btnLogout"
+                    style="@style/AppTextViewNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_share_24"
+                    android:drawablePadding="@dimen/_25sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Logout"
                     android:textColor="@color/black" />
             </LinearLayout>
 

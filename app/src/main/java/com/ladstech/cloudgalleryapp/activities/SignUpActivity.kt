@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.ladstech.cloudgalleryapp.R
 import com.ladstech.cloudgalleryapp.databinding.ActivitySignUpBinding
+
 import com.ladstech.cloudgalleryapp.fragments.FragmentLoginRegisterHammad
 
 

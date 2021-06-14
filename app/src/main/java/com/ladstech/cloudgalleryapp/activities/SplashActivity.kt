@@ -2,13 +2,9 @@ package com.ladstech.cloudgalleryapp.activities
 
 
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,20 +12,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.ladstech.cloudgalleryapp.R
+import com.ladstech.cloudgalleryapp.callBacks.MessageEvent
 import com.ladstech.cloudgalleryapp.databinding.ActivitySplashBinding
-
-
 import com.ladstech.cloudgalleryapp.fragments.LoginFragment
 import com.ladstech.cloudgalleryapp.fragments.ProfileFragmentF
 import com.ladstech.cloudgalleryapp.fragments.WelcomFragment
-import com.ladstech.cloudgalleryapp.utils.AppConstant
 import com.ladstech.cloudgalleryapp.utils.Helper
-
-
 import com.ladstech.cloudgalleryapp.utils.SessionManager
-import com.zhpan.indicator.enums.IndicatorSlideMode
-import com.zhpan.indicator.enums.IndicatorStyle
 import kotlinx.android.synthetic.main.activity_splash.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 private const val NUM_PAGES = 3
 
@@ -41,35 +34,33 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivitySplashBinding.inflate(layoutInflater)
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
-        window.statusBarColor = Color.TRANSPARENT
-        sessionManager = SessionManager.getInstance(this.applicationContext)
+        //  this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //  window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        //   window.statusBarColor = Color.TRANSPARENT
         setContentView(mBinding.root)
+        sessionManager = SessionManager.getInstance(this.applicationContext)
         mBinding.btnGetStarted.setOnClickListener {
 
-//            if (!sessionManager.isLoggedIn) {
-//                val mainIntent = Intent(this, SignUpActivity::class.java)
-//                startActivity(mainIntent)
-//            } else {
-//                val mainIntent = Intent(this, GalleryAppHome::class.java)
-//                startActivity(mainIntent)
-//            }
-
-            gotoNextPage()
+            if (sessionManager.isLoggedIn) {
+                Helper.startActivity(
+                    this@SplashActivity,
+                    Intent(this@SplashActivity, HomeActivity::class.java),
+                    true
+                )
+          finishAffinity()
+            } else {
+                gotoNextPage()
+            }
         }
+        mBinding.tvGetStarted.setOnClickListener {
+            gotoNextPage()
 
+        }
         if (sessionManager.user != null && sessionManager.isLoggedIn) {
             Helper.sessionRefresh()
         }
-
-
-
         initViewPager()
-
-
+        EventBus.getDefault().register(this)
     }
 
 
@@ -90,7 +81,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         ////swipe to change
-        //  mBinding.pager.isUserInputEnabled = false
+        mBinding.pager.isUserInputEnabled = false
         mBinding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
@@ -111,90 +102,55 @@ class SplashActivity : AppCompatActivity() {
             }
         })
 
-        //Bind the title indicator to the adapter
-//        mBinding.indicator.setViewPager(mBinding.pager)
-       // mBinding.dots.setViewPager2(mBinding.pager)
-        mBinding.dots.apply {
-            setSliderColor(ContextCompat.getColor(this@SplashActivity,R.color.grey), ContextCompat.getColor(this@SplashActivity,R.color.white))
-            setSliderWidth(resources.getDimension(R.dimen._8sdp))
-            setSliderHeight(resources.getDimension(R.dimen._8sdp))
-            setSlideMode(IndicatorSlideMode.WORM)
-            setIndicatorStyle(IndicatorStyle.CIRCLE)
-            setPageSize(mBinding.pager!!.adapter!!.itemCount)
-            setupWithViewPager(mBinding.pager)
-            notifyDataChanged()
-        }
+
+        mBinding.dots.setViewPager2(mBinding.pager)
+
     }
 
     private fun onPageStatChanged() {
         when {
             isFirstPage() -> {
-
-//                mBinding.dots.selectedDotColor=(ContextCompat.getColor(this, R.color.white))
-////                mBinding.dots.setStrokeDotsIndicatorColor(
-////                    ContextCompat.getColor(
-////                        this,
-////                        R.color.white
-////                    )
-////                )
-
-                    mBinding.btnGetStarted.text=""
-
-                mBinding.dots.apply {
-                    setSliderColor(
-                        ContextCompat.getColor(this@SplashActivity, R.color.grey),
-                        ContextCompat.getColor(this@SplashActivity, R.color.white)
+                mBinding.btnGetStarted.visibility = View.VISIBLE
+                mBinding.tvGetStarted.visibility = View.GONE
+                mBinding.btnGetStarted.setColorFilter(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.app_color_blue
                     )
-                }
+                )
+                mBinding.dots.selectedDotColor =
+                    ContextCompat.getColor(this@SplashActivity, R.color.white)
+
             }
             isLastPage() -> {
-             //   mBinding.dots.selectedDotColor=(ContextCompat.getColor(this, R.color.white))
-//                mBinding.dots.setStrokeDotsIndicatorColor(
-//                    ContextCompat.getColor(
-//                        this,
-//                        R.color.white
-//                    )
-//                )
-                mBinding.dots.apply {
-                    setSliderColor(
-                        ContextCompat.getColor(this@SplashActivity, R.color.grey),
-                        ContextCompat.getColor(this@SplashActivity, R.color.white)
+
+                mBinding.dots.selectedDotColor =
+                    ContextCompat.getColor(this@SplashActivity, R.color.white)
+                mBinding.btnGetStarted.setColorFilter(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.app_color_blue
                     )
-                }
-                mBinding.btnGetStarted.text="Let's Start"
+                )
+                mBinding.btnGetStarted.visibility = View.GONE
+                mBinding.tvGetStarted.visibility = View.VISIBLE
             }
             else -> {
-//                mBinding.dots.selectedDotColor=(
-//                    ContextCompat.getColor(
-//                        this,
-//                        R.color.app_color_blue
-//                    )
-//                )
-//                mBinding.dots.setStrokeDotsIndicatorColor(
-//                    ContextCompat.getColor(
-//                        this,
-//                        R.color.app_color_blue
-//                    )
-//                )
-                mBinding.btnGetStarted.text="Next"
-                mBinding.dots.apply {
-                    setSliderColor(
-                        ContextCompat.getColor(this@SplashActivity, R.color.grey),
-                        ContextCompat.getColor(this@SplashActivity, R.color.app_color_blue)
-                    )
-                }
+                mBinding.btnGetStarted.visibility = View.VISIBLE
+                mBinding.btnGetStarted.setColorFilter(ContextCompat.getColor(this, R.color.white))
 
+                mBinding.tvGetStarted.visibility = View.GONE
+                mBinding.dots.selectedDotColor =
+                    ContextCompat.getColor(this@SplashActivity, R.color.app_color_yellow)
             }
         }
     }
 
     private fun gotoNextPage() {
         if (isLastPage()) {
-
-
-            val intent = Intent(this@SplashActivity, HomeActivity::class.java)
-            Helper.startActivity(this, intent, false)
-
+//            val intent = Intent(this@SplashActivity, HomeActivity::class.java)
+//            Helper.startActivity(this, intent, false)
+            EventBus.getDefault().post(MessageEvent(getString(R.string.login)))
         } else {
             if (isEnglish) {
                 mBinding.pager.currentItem += 1
@@ -234,5 +190,25 @@ class SplashActivity : AppCompatActivity() {
 
         override fun createFragment(position: Int): Fragment = fragmentList[position]
     }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MessageEvent?) {
+        if (event != null) {
+            Log.d("onEventt", event.event)
+            when (event.event) {
+                getString(R.string.gotonextpage) -> {
+                    gotoNextPage()
+                }
+            }
+        }
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.ladstech.cloudgalleryapp.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -9,6 +10,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.PopupWindow
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,22 +34,19 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-//        loadingLayout = mBinding.loadingLayout.rlLoading
+//        loadingLayout = mBinding.loadin
+//         gLayout.rlLoading
 //        noDataFoundLayout = mBinding.noDataLayout.noDataChild
 
         mBinding.ivNav.setOnClickListener { openLeftMenu() }
-        mBinding.navContent.btnBlockedUser.setOnClickListener {
-            openLeftMenu()
+        mBinding.ivBlockedUsers.setOnClickListener {
             Helper.startActivity(
                 this@HomeActivity,
                 Intent(this@HomeActivity, BlockedUserActivity::class.java),
                 false
             )
         }
-        mBinding.navContent.btnSendRequest.setOnClickListener {
-            openLeftMenu()
-            showCustomAppAlert(this, R.layout.send_request_layout)
-        }
+
         mBinding.navContent.btnAcceptRequst.setOnClickListener {
             openLeftMenu()
             showCustomAppAlert(this, R.layout.accept_request_layout)
@@ -56,13 +55,37 @@ class HomeActivity : BaseActivity() {
             openLeftMenu()
             showCustomAppAlert(this, R.layout.verify_otp_layout)
         }
+        mBinding.navContent.btnCloseApp.setOnClickListener {
+            openLeftMenu()
+            showCustomAppAlert(this, R.layout.close_layout)
+        }
+        mBinding.navContent.btnSendRequest.setOnClickListener {
+            openLeftMenu()
+            showCustomAppAlert(this, R.layout.send_request_layout)
+        }
+
+        mBinding.navContent.btnLogout.setOnClickListener {
+          sessionManager.clearSession()
+            sessionManager.isLoggedIn=false
+            Helper.startActivity(this@HomeActivity,Intent(this@HomeActivity,SplashActivity::class.java),true)
+
+        }
+
 
         setUpPopWindow()
         initRv()
 
 
     }
-
+    fun PopupWindow.dimBehind() {
+        val container = contentView.rootView
+        val context = contentView.context
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val p = container.layoutParams as WindowManager.LayoutParams
+        p.flags = p.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        p.dimAmount = 0.3f
+        wm.updateViewLayout(container, p)
+    }
     fun showCustomAppAlert(activity: Activity, view: Int) {
 
         val layout = this.layoutInflater.inflate(
@@ -72,20 +95,9 @@ class HomeActivity : BaseActivity() {
         val dialog = AlertDialog.Builder(activity)
             .setView(layout)
             .create()
-        //  val layoutParams = dialog.window!!.attributes
-        //  layoutParams.y = 160 // top margin
-        //dialog.window!!.attributes = layoutParams
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        // dialog.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        // dialog.window!!.setGravity(Gravity.TOP)
         dialog.show()
-//        val timer2 = Timer()
-//        timer2.schedule(object : TimerTask() {
-//            override fun run() {
-//                dialog.dismiss()
-//                timer2.cancel() //this will cancel the timer of the system
-//            }
-//        }, 2000)
+
     }
 
     private fun setUpPopWindow() {
@@ -97,6 +109,8 @@ class HomeActivity : BaseActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         popupWindow?.let { popupWindow ->
+            popupWindow.elevation=8.0f
+
             popupWindow.setBackgroundDrawable(ColorDrawable())
             popupWindow.isOutsideTouchable = true
             popupWindow.setOnDismissListener(PopupWindow.OnDismissListener {
@@ -149,12 +163,13 @@ class HomeActivity : BaseActivity() {
                     }
                     R.id.btnMorePost -> {
                         //see options
-                        //onSingleSectionWithIconsClicked(view)
+
                         popupWindow?.let { popupWindow ->
                             if (popupWindow.isShowing) {
                                 popupWindow.dismiss()
                             }
-                            popupWindow.showAsDropDown(view, 0, 0, Gravity.TOP)
+                            popupWindow.showAsDropDown(view,-view.width*2,-3*view.height)
+                            popupWindow.dimBehind()
                         }
                     }
 
