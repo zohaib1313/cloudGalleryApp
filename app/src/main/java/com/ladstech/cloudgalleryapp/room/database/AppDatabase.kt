@@ -43,6 +43,6 @@ abstract class AppDatabase : RoomDatabase() {
     }
 }
 
-const val DB_VERSION = 3
+const val DB_VERSION = 5
 const val DB_NAME = "appDb.db"
 

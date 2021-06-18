@@ -58,9 +58,8 @@ public class SquareImageView extends androidx.appcompat.widget.AppCompatImageVie
         }
 
 
-
         Bitmap roundBitmap = getRoundedCroppedBitmap(cropBitmap(temporaryBitmap), getWidth(), getHeight());
-       canvas.drawBitmap(roundBitmap, 0, 0, null);
+        canvas.drawBitmap(roundBitmap, 0, 0, null);
         //canvas.drawBitmap(roundBitmap, null, new RectF(0, 0, getWidth(), getHeight()), null);
     }
 
@@ -88,7 +87,7 @@ public class SquareImageView extends androidx.appcompat.widget.AppCompatImageVie
         } else if (sourceBmp.getWidth() < sourceBmp.getHeight()) {
             outputBmp = Bitmap.createBitmap(sourceBmp, 0, 0, sourceBmp.getWidth(), sourceBmp.getWidth());
         } else {
-        outputBmp = sourceBmp;
+            outputBmp = sourceBmp;
         }
 
         return outputBmp;
@@ -101,10 +100,23 @@ public class SquareImageView extends androidx.appcompat.widget.AppCompatImageVie
 //        } else {
 //            finalBitmap = bitmap;
 //        }
-        finalBitmap = Bitmap.createScaledBitmap(bitmap, width/2, height/3, true);
- //finalBitmap=tr
 
-       // finalBitmap = bitmap;
+        // creating the image that maintain aspect ratio with width of image is set to screenwidth.
+
+//        int diw = bitmap.getWidth();
+//
+//        if (diw > 0) {
+//
+//           int heightx = width * bitmap.getHeight() / diw;
+//            finalBitmap = Bitmap.createScaledBitmap(bitmap, width, heightx, false);
+//        }
+//
+//    }
+
+        finalBitmap = Bitmap.createScaledBitmap(bitmap, getWidth(), getHeight(), false);
+        //finalBitmap=tr
+
+        // finalBitmap = bitmap;
 
 
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
@@ -201,4 +213,31 @@ public class SquareImageView extends androidx.appcompat.widget.AppCompatImageVie
         this.removeBorder = removeBorder;
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        try {
+            Drawable drawable = getDrawable();
+
+            if (drawable == null) {
+                setMeasuredDimension(0, 0);
+            } else {
+                float imageSideRatio = (float) drawable.getIntrinsicWidth() / (float) drawable.getIntrinsicHeight();
+                float viewSideRatio = (float) MeasureSpec.getSize(widthMeasureSpec) / (float) MeasureSpec.getSize(heightMeasureSpec);
+                if (imageSideRatio >= viewSideRatio) {
+                    // Image is wider than the display (ratio)
+                    int width = MeasureSpec.getSize(widthMeasureSpec);
+                    int height = (int) (width / imageSideRatio);
+                    setMeasuredDimension(width, height);
+                } else {
+                    // Image is taller than the display (ratio)
+                    int height = MeasureSpec.getSize(heightMeasureSpec);
+                    int width = (int) (height * imageSideRatio);
+                    setMeasuredDimension(width, height);
+                }
+            }
+        } catch (Exception e) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+
+    }
 }

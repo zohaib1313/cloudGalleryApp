@@ -11,12 +11,14 @@ import com.amplifyframework.datastore.generated.model.Comments
 import com.amplifyframework.datastore.generated.model.Posts
 
 import com.appseen.contacts.sharing.app.callBacks.OnItemClickListener
+import com.bumptech.glide.Glide
+import com.ladstech.cloudgalleryapp.R
 import com.ladstech.cloudgalleryapp.databinding.RowCommentsBinding
 
 import com.ladstech.cloudgalleryapp.databinding.RowPostsBinding
+import com.ladstech.cloudgalleryapp.utils.Helper
 
 import kotlinx.android.synthetic.main.row_posts.view.*
-
 
 
 class AdapterComments(
@@ -32,7 +34,7 @@ class AdapterComments(
 
         init {
             binding.root.setOnClickListener(this)
-
+            binding.likeToggleComment.setOnClickListener(this)
 
         }
 
@@ -54,58 +56,21 @@ class AdapterComments(
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return dataList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//        with(holder) {
-//            with(dataList[position]) {
-//
-//                Log.d("taaag", likes.size.toString())
-//                try {
-//
-//
-//                    post?.let { post ->
-//                        binding.tvName.text = post.whoPostedUser.name
-////                        binding.tv.text = post.title
-////                        binding.pDescriptionTv.text = post.description
-//                        binding.tvTime.text = Helper.getAwsDate(post.createdTime.toLong())
-//                        Glide.with(mContext).load(Helper.getImageUrl(post.image))
-//                            .placeholder(R.drawable.eclipse)
-//                            .into(binding.imageView5)
-//                        Glide.with(mContext).load(Helper.getImageUrl(post.whoPostedUser.image))
-//                            .placeholder(R.drawable.eclipse)
-//                            .into(binding.ivUser)
-//                    }
-//
-//
-////                    binding.pCommentsTv.text = ("${comments.size.toString()} Comments")
-////                    binding.pLikesTv.text = ("${likes.size.toString()} likes")
-////                    if (haveILiked) {
-////                        binding.likeBtn.text = "Unlike"
-////                    }else{
-////                        binding.likeBtn.text = "like"
-////                    }
-//
-//                } catch (e: Exception) {
-//                }
-//
-//
-//                //                binding.tvName.text = name
-////                binding.tvPhone.text=phone
-////                binding.tvDateTime.text = Helper.getAwsDate(sharingWithCloudModel.fileTime.toLong())
-////                binding.tvSize.text = "${size.toString()} B"
-////                sharingWithCloudModel.user.image?.let {
-////                    Glide.with(mContext).load(Helper.getImageUrl(it.toString()))
-////                        .placeholder(R.drawable.eclipse)
-//////                    .skipMemoryCache(true)
-//////                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-////                        .into(binding.ivContact)
-////                }
-//
-//
-//            }
-//        }
+        with(holder) {
+            with(dataList[position]) {
+
+                binding.tvPersonName.text = whoCommentedUser.name
+                binding.tvComment.text = content
+                Glide.with(mContext).load(Helper.getImageUrl(whoCommentedUser.image))
+                    .placeholder(R.drawable.eclipse).into(binding.ivUser)
+                Log.d("taaag", Helper.getImageUrl(whoCommentedUser.image))
+
+            }
+        }
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {

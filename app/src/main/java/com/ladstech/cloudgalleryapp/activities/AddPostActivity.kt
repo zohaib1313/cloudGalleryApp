@@ -29,7 +29,6 @@ class AddPostActivity : BaseActivity() {
 
         postType = intent.getBooleanExtra(AppConstant.KEY_DATA, true)
         postType?.let {
-
             mBinding.galleryBtn.setOnClickListener {
                 ImagePicker.with(this)
                     .compress(1024)         //Final image size will be less than 1 MB(Optional)

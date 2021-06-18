@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_6sdp"
-
-
-    >
+    android:layout_marginTop="@dimen/_6sdp">
 
     <RelativeLayout
         android:id="@+id/card"
@@ -22,7 +19,7 @@
             app:civ_border_width="1dp" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
-
+            android:id="@+id/ivUser"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_margin="@dimen/_2sdp"
@@ -62,6 +59,7 @@
         android:textSize="@dimen/_12sdp" />
 
     <ToggleButton
+        android:id="@+id/likeToggleComment"
         android:layout_width="@dimen/_18sdp"
         android:layout_height="@dimen/_18sdp"
         android:layout_alignParentEnd="true"

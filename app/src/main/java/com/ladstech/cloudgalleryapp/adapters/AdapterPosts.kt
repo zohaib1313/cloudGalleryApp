@@ -14,9 +14,11 @@ import com.amplifyframework.datastore.generated.model.Posts
 
 import com.appseen.contacts.sharing.app.callBacks.OnItemClickListener
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler
+import com.bumptech.glide.Glide
 import com.ladstech.cloudgalleryapp.R
 
 import com.ladstech.cloudgalleryapp.databinding.RowPostsBinding
+import com.ladstech.cloudgalleryapp.utils.Helper
 
 import kotlinx.android.synthetic.main.row_posts.view.*
 
@@ -60,74 +62,23 @@ class AdapterPosts(
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return dataList.size
     }
 
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//        with(holder) {
-//            with(dataList[position]) {
-//
-//                Log.d("taaag", likes.size.toString())
-//                try {
-//
-//
-//                    post?.let { post ->
-//                        binding.tvName.text = post.whoPostedUser.name
-////                        binding.tv.text = post.title
-////                        binding.pDescriptionTv.text = post.description
-//                        binding.tvTime.text = Helper.getAwsDate(post.createdTime.toLong())
-//                        Glide.with(mContext).load(Helper.getImageUrl(post.image))
-//                            .placeholder(R.drawable.eclipse)
-//                            .into(binding.imageView5)
-//                        Glide.with(mContext).load(Helper.getImageUrl(post.whoPostedUser.image))
-//                            .placeholder(R.drawable.eclipse)
-//                            .into(binding.ivUser)
-//                    }
-//
-//
-////                    binding.pCommentsTv.text = ("${comments.size.toString()} Comments")
-////                    binding.pLikesTv.text = ("${likes.size.toString()} likes")
-////                    if (haveILiked) {
-////                        binding.likeBtn.text = "Unlike"
-////                    }else{
-////                        binding.likeBtn.text = "like"
-////                    }
-//
-//                } catch (e: Exception) {
-//                }
-//
-//
-//                //                binding.tvName.text = name
-////                binding.tvPhone.text=phone
-////                binding.tvDateTime.text = Helper.getAwsDate(sharingWithCloudModel.fileTime.toLong())
-////                binding.tvSize.text = "${size.toString()} B"
-////                sharingWithCloudModel.user.image?.let {
-////                    Glide.with(mContext).load(Helper.getImageUrl(it.toString()))
-////                        .placeholder(R.drawable.eclipse)
-//////                    .skipMemoryCache(true)
-//////                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-////                        .into(binding.ivContact)
-////                }
-//
-//
-//            }
-//        }
-
-
-//        holder!!.binding.btnMorePost!!.setOnClickListener {
-//            val popup = PopupMenu(mContext, holder.binding.btnMorePost)
-//            popup.inflate(R.menu.menu_f)
-//            popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
-//                override fun onMenuItemClick(p0: MenuItem?): Boolean {
-//                    Log.e(">>",p0.toString())
-//                    return true
-//                }
-//
-//            })
-//            popup.show();
-//        }
-
+        with(holder) {
+            with(dataList[position]) {
+                Glide.with(mContext).load(Helper.getImageUrl(image)).placeholder(R.drawable.eclipse)
+                    .into(binding.imageView5)
+                Log.d("taaag",image+" ==")
+                Log.d("taaag",Helper.getImageUrl(image))
+                Glide.with(mContext).load(Helper.getImageUrl(whoPostedUser.image)).placeholder(R.drawable.eclipse)
+                    .into(binding.ivUser)
+                binding.tvName.text = whoPostedUser.name
+                binding.tvTime.text = Helper.getAwsDate(createdTime.toLong())
+            }
+        }
 
     }
 

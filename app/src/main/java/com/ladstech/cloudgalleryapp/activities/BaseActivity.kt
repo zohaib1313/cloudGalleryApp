@@ -199,6 +199,7 @@ open class BaseActivity : AppCompatActivity() {
                     if (posts.isPublic) {
                         val postsTable = PostsTable()
                         postsTable.postId = posts.id
+                        postsTable.postImage=posts.image
                         postsTable.title = posts.title
                         postsTable.description = posts.description
                         postsTable.isPublic = posts.isPublic
@@ -207,8 +208,8 @@ open class BaseActivity : AppCompatActivity() {
                         viewModelPosts?.insert(postsTable)
                     }
                 }
-                initCommentsViewModel()
-                initLikesViewModel()
+//                initCommentsViewModel()
+//                initLikesViewModel()
                 ThreadUtils.runOnUiThread {
                     hideLoading()
                 }
@@ -221,14 +222,14 @@ open class BaseActivity : AppCompatActivity() {
             printLog("error getting posts")
             ThreadUtils.runOnUiThread { hideLoading() }
         })
-
+//!!!!!!!!!!!!!!!  subscriber create !!!!!!!!!!!!!!!!/
         val subscription = Amplify.API.subscribe(
             ModelSubscription.onCreate(Posts::class.java),
-            { Log.i(AppConstant.TAG, "Subscription established") },
+            { Log.i(AppConstant.TAG, "post create Subscription established") },
             {
                 Log.i(
                     AppConstant.TAG,
-                    "Post create subscription received: ${(it.data as Posts).title}"
+                    "Post create subscription received: ${(it.data as Posts).toString()}"
                 )
                 ThreadUtils.runOnUiThread {
                     if (it.data.isPublic) {
@@ -253,14 +254,60 @@ open class BaseActivity : AppCompatActivity() {
                 }
             },
             {
-                Log.i(AppConstant.TAG, "Subscription completed")
+                Log.i(AppConstant.TAG, "Post create Subscription completed")
                 ThreadUtils.runOnUiThread {
                     hideLoading()
                 }
             }
         )
 
+//!!!!!!!!!!!!!!!  subscriber delete !!!!!!!!!!!!!!!!/
 
+
+        val subscriptionDelete = Amplify.API.subscribe(
+            ModelSubscription.onDelete(Posts::class.java),
+            { Log.i(AppConstant.TAG, "post delete Subscription established") },
+            {
+                Log.i(
+                    AppConstant.TAG,
+                    "Post delete subscription received: ${(it.data as Posts).title}"
+                )
+                ThreadUtils.runOnUiThread {
+                    if (it.data.isPublic) {
+                        val posts = it.data
+                        //  dataListPosts.add(it.data as Posts)
+                        val postsTable = PostsTable()
+                        postsTable.postId = posts.id
+                        postsTable.title = posts.title
+                        postsTable.description = posts.description
+                        postsTable.isPublic = posts.isPublic
+                        postsTable.createdTime = posts.createdTime
+                        postsTable.whoPostedUser = Gson().toJson(posts.whoPostedUser)
+                        viewModelPosts?.delete(postsTable)
+                        hideLoading()
+                    }
+                }
+            },
+            {
+                Log.e(AppConstant.TAG, " Post delete Subscription failed", it)
+                ThreadUtils.runOnUiThread {
+                    hideLoading()
+                }
+            },
+            {
+                Log.i(AppConstant.TAG, "Subscription completed")
+                ThreadUtils.runOnUiThread {
+                    hideLoading()
+                }
+            }
+        )
+        if (subscription != null) {
+        printLog("delete subscription started")
+            subscription.start()
+        }
+        if (subscriptionDelete != null) {
+            subscriptionDelete.start()
+        }
     }
 
 

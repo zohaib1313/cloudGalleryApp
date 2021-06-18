@@ -183,7 +183,7 @@ dependencies {
 
     implementation  'com.bogdwellers:pinchtozoom:0.1'
 
-
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
 
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'

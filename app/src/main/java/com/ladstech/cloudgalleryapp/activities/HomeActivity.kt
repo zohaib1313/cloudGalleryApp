@@ -1,27 +1,56 @@
 package com.ladstech.cloudgalleryapp.activities
 
+import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.*
 import android.widget.ImageView
 import android.widget.PopupWindow
+import android.widget.Toast
+import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.PopupMenu
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.amplifyframework.api.graphql.model.ModelMutation
+import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.generated.model.Posts
+import com.amplifyframework.datastore.generated.model.UserCloudGallery
 import com.appseen.contacts.sharing.app.callBacks.OnItemClickListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.google.gson.Gson
 import com.ladstech.cloudgalleryapp.R
 import com.ladstech.cloudgalleryapp.adapters.AdapterPosts
 import com.ladstech.cloudgalleryapp.databinding.ActivityHomeBinding
+import com.ladstech.cloudgalleryapp.room.entities.PostsTable
+import com.ladstech.cloudgalleryapp.room.viewModels.PostsViewModel
+import com.ladstech.cloudgalleryapp.utils.AppConstant
 import com.ladstech.cloudgalleryapp.utils.Helper
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.row_posts.view.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 
 class HomeActivity : BaseActivity() {
@@ -30,6 +59,7 @@ class HomeActivity : BaseActivity() {
     private lateinit var adapterPosts: AdapterPosts
     private var dataListPosts = ArrayList<Posts>()
     var popupWindow: PopupWindow? = null
+    private lateinit var viewModelPosts: PostsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityHomeBinding.inflate(layoutInflater)
@@ -65,18 +95,87 @@ class HomeActivity : BaseActivity() {
         }
 
         mBinding.navContent.btnLogout.setOnClickListener {
-          sessionManager.clearSession()
-            sessionManager.isLoggedIn=false
-            Helper.startActivity(this@HomeActivity,Intent(this@HomeActivity,SplashActivity::class.java),true)
+            sessionManager.clearSession()
+            sessionManager.isLoggedIn = false
+            Helper.startActivity(
+                this@HomeActivity,
+                Intent(this@HomeActivity, SplashActivity::class.java),
+                true
+            )
 
         }
 
+        mBinding.fabAddPost.setOnClickListener {
 
-        setUpPopWindow()
+            val dialog = android.app.AlertDialog.Builder(this)
+                .setTitle("Chose Post type")
+                .setCancelable(true)
+                .setPositiveButton("Public Post", DialogInterface.OnClickListener { dialog, which ->
+
+                    com.ladstech.cloudgalleryapp.utils.Helper.startActivity(
+                        this,
+                        Intent(this, AddPostActivity::class.java).apply {
+                            putExtra(AppConstant.KEY_DATA, true)
+                        },
+                        false
+                    )
+                    dialog.dismiss()
+                })
+                .setNegativeButton(
+                    "Private Post",
+                    DialogInterface.OnClickListener { dialog, which ->
+                        com.ladstech.cloudgalleryapp.utils.Helper.startActivity(
+                            this,
+                            Intent(this, AddPostActivity::class.java).apply {
+                                putExtra(AppConstant.KEY_DATA, false)
+                            },
+                            false
+                        )
+                        dialog.dismiss()
+                    })
+                .create()
+
+            dialog.show()
+        }
+
+
         initRv()
 
 
     }
+
+    private fun initPostsObserver() {
+
+        viewModelPosts = ViewModelProviders.of(this).get(PostsViewModel::class.java)
+        val observer = Observer<List<PostsTable>>() {
+            dataListPosts.clear()
+            it.forEach { posts ->
+                val post = Posts.Builder()
+                    .createdTime(posts.createdTime)
+                    .image(posts.postImage)
+                    .isPublic(posts.isPublic)
+                    .title(posts.title)
+                    .description(posts.description)
+                    .whoPostedUser(
+                        Gson().fromJson(
+                            posts.whoPostedUser,
+                            UserCloudGallery::class.java
+                        )
+                    )
+                    .id(posts.postId)
+                    .build()
+
+
+                if (post.isPublic) {
+                    dataListPosts.add(post)
+                    adapterPosts.notifyDataSetChanged()
+                }
+            }
+
+        }
+        viewModelPosts.liveDataList.observeForever(observer)
+    }
+
     fun PopupWindow.dimBehind() {
         val container = contentView.rootView
         val context = contentView.context
@@ -86,6 +185,7 @@ class HomeActivity : BaseActivity() {
         p.dimAmount = 0.3f
         wm.updateViewLayout(container, p)
     }
+
     fun showCustomAppAlert(activity: Activity, view: Int) {
 
         val layout = this.layoutInflater.inflate(
@@ -100,7 +200,7 @@ class HomeActivity : BaseActivity() {
 
     }
 
-    private fun setUpPopWindow() {
+    private fun setUpPopWindow(post: Posts, view: View) {
         val layoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView: View = layoutInflater.inflate(R.layout.popup_filter_layout, null)
         popupWindow = PopupWindow(
@@ -109,7 +209,7 @@ class HomeActivity : BaseActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         popupWindow?.let { popupWindow ->
-            popupWindow.elevation=8.0f
+            popupWindow.elevation = 8.0f
 
             popupWindow.setBackgroundDrawable(ColorDrawable())
             popupWindow.isOutsideTouchable = true
@@ -127,6 +227,31 @@ class HomeActivity : BaseActivity() {
                 printLog("share")
                 popupWindow.dismiss()
 
+            }
+            popupView.findViewById<ImageView>(R.id.ivDelete).setOnClickListener {
+                printLog("deleting post")
+                popupWindow.dismiss()
+
+                Amplify.API.mutate(ModelMutation.delete(post), { response ->
+                    if (!response.hasErrors()) {
+                        printLog("Post deleted")
+                    }
+
+                }, {})
+
+                Amplify.Storage.remove(post.image,
+                    { printLog("Post image deleted") },
+                    { printLog("Post deleted failed") })
+
+
+            }
+
+            popupWindow?.let { popupWindow ->
+                if (popupWindow.isShowing) {
+                    popupWindow.dismiss()
+                }
+                popupWindow.showAsDropDown(view, -view.width * 2, -3 * view.height)
+                popupWindow.dimBehind()
             }
         }
     }
@@ -156,39 +281,34 @@ class HomeActivity : BaseActivity() {
                     R.id.btnDownloadPost -> {
 
                         //download
-
+                        downloadImage(Helper.getImageUrl(dataListPosts[position].image))
                     }
                     R.id.ivUser -> {
                         ///see user profile
                     }
                     R.id.btnMorePost -> {
                         //see options
+                        setUpPopWindow(dataListPosts[position], view)
 
-                        popupWindow?.let { popupWindow ->
-                            if (popupWindow.isShowing) {
-                                popupWindow.dismiss()
-                            }
-                            popupWindow.showAsDropDown(view,-view.width*2,-3*view.height)
-                            popupWindow.dimBehind()
-                        }
                     }
 
                     R.id.imageView5 -> {
                         //see post details
-//                          gotoPostDetailActivity(dataListPosts[position])
+
                         Helper.startActivity(
                             this@HomeActivity,
-                            Intent(this@HomeActivity, PostDetailActivity::class.java),
+                            Intent(this@HomeActivity, PostDetailActivity::class.java).apply {
+                                putExtra(AppConstant.KEY_DATA, Gson().toJson(dataListPosts[position]))
+                            },
                             false
                         )
-
                     }
                 }
 
             }
         })
 
-
+        initPostsObserver()
     }
 
     private fun openLeftMenu() {
@@ -201,15 +321,96 @@ class HomeActivity : BaseActivity() {
     }
 
 
-    private fun gotoPostDetailActivity(posts: Posts) {
 
-        Helper.startActivity(
-            this@HomeActivity,
-            Intent(this@HomeActivity, PostDetailActivity::class.java),
-            false
-        )
 
+    fun downloadImage(imageURL: String) {
+        if (!verifyPermissions()) {
+            return
+        }
+        val fileName = imageURL.substring(imageURL.lastIndexOf('/') + 1)
+        Glide.with(this)
+            .load(imageURL)
+            .into(object : CustomTarget<Drawable?>() {
+                override fun onResourceReady(
+                    @NonNull resource: Drawable,
+                    @Nullable transition: Transition<in Drawable?>?
+                ) {
+                    val bitmap = (resource as BitmapDrawable).bitmap
+                    Toast.makeText(this@HomeActivity, "Saving Image...", Toast.LENGTH_SHORT).show()
+                    saveMediaToStorage(bitmap)
+                }
+
+                override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                override fun onLoadFailed(@Nullable errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    Toast.makeText(
+                        this@HomeActivity,
+                        "Failed to Download Image! Please try again later.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    fun saveMediaToStorage(bitmap: Bitmap) {
+        //Generating a file name
+        val filename = "${System.currentTimeMillis()}.jpg"
+
+        //Output stream
+        var fos: OutputStream? = null
+
+        //For devices running android >= Q
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            //getting the contentResolver
+            this@HomeActivity?.contentResolver?.also { resolver ->
+
+                //Content resolver will process the contentvalues
+                val contentValues = ContentValues().apply {
+
+                    //putting file information in content values
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+
+                //Inserting the contentValues to contentResolver and getting the Uri
+                val imageUri: Uri? =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+                //Opening an outputstream with the Uri that we got
+                fos = imageUri?.let { resolver.openOutputStream(it) }
+            }
+        } else {
+            //These for devices running on android < Q
+            //So I don't think an explanation is needed here
+            val imagesDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDir, filename)
+            fos = FileOutputStream(image)
+        }
+
+        fos?.use {
+            //Finally writing the bitmap to the output stream that we opened
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            Toast.makeText(this@HomeActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
+    fun verifyPermissions(): Boolean {
+
+        // This will return the current Status
+        val permissionExternalMemory =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (permissionExternalMemory != PackageManager.PERMISSION_GRANTED) {
+            val STORAGE_PERMISSIONS = arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            )
+            // If permission not granted then ask for permission real time.
+            ActivityCompat.requestPermissions(this, STORAGE_PERMISSIONS, 1)
+            return false
+        }
+        return true
+    }
 }
