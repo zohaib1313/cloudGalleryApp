@@ -238,7 +238,7 @@ class FragmentLoginRegisterHammad : Fragment() {
 //                    requireActivity().finishAffinity()
 
 
-                    changeFragment(ProfileFragment.newInstance(0), true)
+//                    changeFragment(ProfileFragment.newInstance(0), true)
 
                 }
 

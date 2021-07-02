@@ -111,8 +111,6 @@ class AddPostActivity : BaseActivity() {
         val post = Posts.Builder()
             .createdTime(Helper.getCurrentTimeStamp())
             .image(fileKey)
-            .isPublic(postType)
-            .title(mBinding.tvTitle.text.toString())
             .description(mBinding.tvDescription.text.toString())
             .whoPostedUser(sessionManager.user)
             .build()

@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -17,6 +16,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.PopupWindow
@@ -25,12 +25,16 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ShareCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils
 import com.amplifyframework.api.graphql.model.ModelMutation
+import com.amplifyframework.api.graphql.model.ModelQuery
+import com.amplifyframework.api.graphql.model.ModelSubscription
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.generated.model.Posts
 import com.amplifyframework.datastore.generated.model.UserCloudGallery
@@ -40,23 +44,32 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.gson.Gson
 import com.ladstech.cloudgalleryapp.R
-import com.ladstech.cloudgalleryapp.adapters.AdapterPosts
+import com.ladstech.cloudgalleryapp.adapters.AdapterHomePosts
 import com.ladstech.cloudgalleryapp.databinding.ActivityHomeBinding
+
+import com.ladstech.cloudgalleryapp.room.database.AppDatabase
 import com.ladstech.cloudgalleryapp.room.entities.PostsTable
+import com.ladstech.cloudgalleryapp.room.repositories.PostsRepository
 import com.ladstech.cloudgalleryapp.room.viewModels.PostsViewModel
 import com.ladstech.cloudgalleryapp.utils.AppConstant
 import com.ladstech.cloudgalleryapp.utils.Helper
+import ir.shahabazimi.instagrampicker.InstagramPicker
+
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.row_posts.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.lang.Exception
 
 
 class HomeActivity : BaseActivity() {
 
     private lateinit var mBinding: ActivityHomeBinding
-    private lateinit var adapterPosts: AdapterPosts
+    private lateinit var adapterHomePosts: AdapterHomePosts
     private var dataListPosts = ArrayList<Posts>()
     var popupWindow: PopupWindow? = null
     private lateinit var viewModelPosts: PostsViewModel
@@ -72,11 +85,23 @@ class HomeActivity : BaseActivity() {
         mBinding.ivBlockedUsers.setOnClickListener {
             Helper.startActivity(
                 this@HomeActivity,
+
                 Intent(this@HomeActivity, BlockedUserActivity::class.java),
                 false
             )
         }
-
+        mBinding.ivHomeProfile.setOnClickListener {
+            Helper.startActivity(
+                this@HomeActivity,
+                Intent(this@HomeActivity, ProfileDetailsWatchActivity::class.java).apply {
+                    putExtra(
+                        AppConstant.KEY_DATA,
+                        Gson().toJson(sessionManager.user)
+                    )
+                },
+                false
+            )
+        }
         mBinding.navContent.btnAcceptRequst.setOnClickListener {
             openLeftMenu()
             showCustomAppAlert(this, R.layout.accept_request_layout)
@@ -106,36 +131,49 @@ class HomeActivity : BaseActivity() {
         }
 
         mBinding.fabAddPost.setOnClickListener {
+            val `in` = InstagramPicker(this@HomeActivity)
+            `in`.show(0, 1) { address: String? ->
 
-            val dialog = android.app.AlertDialog.Builder(this)
-                .setTitle("Chose Post type")
-                .setCancelable(true)
-                .setPositiveButton("Public Post", DialogInterface.OnClickListener { dialog, which ->
+//                val uri = Uri.parse(address)
+                com.ladstech.cloudgalleryapp.utils.Helper.startActivity(
+                    this,
+                    Intent(this, Add_new_post_f::class.java).apply {
+                        putExtra(AppConstant.KEY_DATA, address.toString())
+                    },
+                    false
+                )
+            }
 
-                    com.ladstech.cloudgalleryapp.utils.Helper.startActivity(
-                        this,
-                        Intent(this, AddPostActivity::class.java).apply {
-                            putExtra(AppConstant.KEY_DATA, true)
-                        },
-                        false
-                    )
-                    dialog.dismiss()
-                })
-                .setNegativeButton(
-                    "Private Post",
-                    DialogInterface.OnClickListener { dialog, which ->
-                        com.ladstech.cloudgalleryapp.utils.Helper.startActivity(
-                            this,
-                            Intent(this, AddPostActivity::class.java).apply {
-                                putExtra(AppConstant.KEY_DATA, false)
-                            },
-                            false
-                        )
-                        dialog.dismiss()
-                    })
-                .create()
 
-            dialog.show()
+//            val dialog = android.app.AlertDialog.Builder(this)
+//                .setTitle("Chose Post type")
+//                .setCancelable(true)
+//                .setPositiveButton("Public Post", DialogInterface.OnClickListener { dialog, which ->
+//
+//                    com.ladstech.cloudgalleryapp.utils.Helper.startActivity(
+//                        this,
+//                        Intent(this, AddPostActivity::class.java).apply {
+//                            putExtra(AppConstant.KEY_DATA, true)
+//                        },
+//                        false
+//                    )
+//                    dialog.dismiss()
+//                })
+//                .setNegativeButton(
+//                    "Private Post",
+//                    DialogInterface.OnClickListener { dialog, which ->
+//                        com.ladstech.cloudgalleryapp.utils.Helper.startActivity(
+//                            this,
+//                            Intent(this, AddPostActivity::class.java).apply {
+//                                putExtra(AppConstant.KEY_DATA, false)
+//                            },
+//                            false
+//                        )
+//                        dialog.dismiss()
+//                    })
+//                .create()
+//
+//            dialog.show()
         }
 
 
@@ -145,7 +183,6 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initPostsObserver() {
-
         viewModelPosts = ViewModelProviders.of(this).get(PostsViewModel::class.java)
         val observer = Observer<List<PostsTable>>() {
             dataListPosts.clear()
@@ -153,8 +190,7 @@ class HomeActivity : BaseActivity() {
                 val post = Posts.Builder()
                     .createdTime(posts.createdTime)
                     .image(posts.postImage)
-                    .isPublic(posts.isPublic)
-                    .title(posts.title)
+
                     .description(posts.description)
                     .whoPostedUser(
                         Gson().fromJson(
@@ -164,14 +200,11 @@ class HomeActivity : BaseActivity() {
                     )
                     .id(posts.postId)
                     .build()
+                dataListPosts.add(post)
 
 
-                if (post.isPublic) {
-                    dataListPosts.add(post)
-                    adapterPosts.notifyDataSetChanged()
-                }
             }
-
+            adapterHomePosts.notifyDataSetChanged()
         }
         viewModelPosts.liveDataList.observeForever(observer)
     }
@@ -225,6 +258,15 @@ class HomeActivity : BaseActivity() {
             }
             popupView.findViewById<ImageView>(R.id.ivShare).setOnClickListener {
                 printLog("share")
+                ShareCompat.IntentBuilder.from(this@HomeActivity)
+                    .setType("text/plain")
+                    .setChooserTitle("Share URL")
+                    .setText(
+                        sessionManager.user.name +
+                                " shared a post with you , click on the link to download/view post" +
+                                "http://www.url.com"
+                    )
+                    .startChooser();
                 popupWindow.dismiss()
 
             }
@@ -232,16 +274,22 @@ class HomeActivity : BaseActivity() {
                 printLog("deleting post")
                 popupWindow.dismiss()
 
-                Amplify.API.mutate(ModelMutation.delete(post), { response ->
-                    if (!response.hasErrors()) {
-                        printLog("Post deleted")
-                    }
+                if(post.whoPostedUser.id==sessionManager.user.id){
+                    Amplify.API.mutate(ModelMutation.delete(post), { response ->
+                        if (!response.hasErrors()) {
+                            printLog("Post deleted")
+                        }
 
-                }, {})
+                    }, {})
 
-                Amplify.Storage.remove(post.image,
-                    { printLog("Post image deleted") },
-                    { printLog("Post deleted failed") })
+                    Amplify.Storage.remove(post.image,
+                        { printLog("Post image deleted") },
+                        { printLog("Post deleted failed") })
+                }else{
+                    Toast.makeText(this@HomeActivity, "You can only delete post created by you", Toast.LENGTH_SHORT).show()
+                }
+
+
 
 
             }
@@ -257,11 +305,11 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initRv() {
-        adapterPosts = AdapterPosts(this@HomeActivity, dataListPosts)
+        adapterHomePosts = AdapterHomePosts(this@HomeActivity, dataListPosts)
         mBinding.rvPost.layoutManager = LinearLayoutManager(this)
         mBinding.rvPost.setHasFixedSize(true)
-        mBinding.rvPost.adapter = adapterPosts
-        adapterPosts.notifyDataSetChanged()
+        mBinding.rvPost.adapter = adapterHomePosts
+        adapterHomePosts.notifyDataSetChanged()
         mBinding.rvPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -274,7 +322,7 @@ class HomeActivity : BaseActivity() {
 
             }
         })
-        adapterPosts.setOnItemClickListener(object : OnItemClickListener {
+        adapterHomePosts.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(view: View, position: Int, character: String) {
 
                 when (view.id) {
@@ -285,10 +333,28 @@ class HomeActivity : BaseActivity() {
                     }
                     R.id.ivUser -> {
                         ///see user profile
+
+
+                        Helper.startActivity(
+                            this@HomeActivity,
+                            Intent(
+                                this@HomeActivity,
+                                ProfileDetailsWatchActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    AppConstant.KEY_DATA,
+                                    Gson().toJson(dataListPosts[position].whoPostedUser)
+                                )
+                            },
+                            false
+                        )
                     }
                     R.id.btnMorePost -> {
                         //see options
-                        setUpPopWindow(dataListPosts[position], view)
+                        try {
+                            setUpPopWindow(dataListPosts[position], view)
+                        } catch (e: Exception) {
+                        }
 
                     }
 
@@ -298,7 +364,10 @@ class HomeActivity : BaseActivity() {
                         Helper.startActivity(
                             this@HomeActivity,
                             Intent(this@HomeActivity, PostDetailActivity::class.java).apply {
-                                putExtra(AppConstant.KEY_DATA, Gson().toJson(dataListPosts[position]))
+                                putExtra(
+                                    AppConstant.KEY_DATA,
+                                    Gson().toJson(dataListPosts[position])
+                                )
                             },
                             false
                         )
@@ -309,7 +378,11 @@ class HomeActivity : BaseActivity() {
         })
 
         initPostsObserver()
+
+
+        // loadPosts()
     }
+
 
     private fun openLeftMenu() {
         Helper.hideKeyboard(this)
@@ -319,8 +392,6 @@ class HomeActivity : BaseActivity() {
             mBinding.drawerLayout.openDrawer(GravityCompat.START)
         }
     }
-
-
 
 
     fun downloadImage(imageURL: String) {
@@ -356,7 +427,7 @@ class HomeActivity : BaseActivity() {
         //Generating a file name
         val filename = "${System.currentTimeMillis()}.jpg"
 
-        //Output stream
+        //Output streamfde
         var fos: OutputStream? = null
 
         //For devices running android >= Q

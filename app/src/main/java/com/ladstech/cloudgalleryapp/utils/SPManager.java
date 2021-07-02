@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 
 public class SPManager {
-    private static final String SETTINGS_NAME = "APP_SETTINGS";
+    private static final String SETTINGS_NAME = AppConstant.PREF_NAME;
     private static SPManager sSharedPrefs;
     private SharedPreferences mPref;
     private SharedPreferences.Editor mEditor;

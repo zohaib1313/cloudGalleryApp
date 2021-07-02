@@ -1,8 +1,10 @@
 package com.ladstech.cloudgalleryapp.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils
 import com.amplifyframework.api.graphql.model.ModelMutation
@@ -12,15 +14,26 @@ import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.generated.model.Comments
 import com.amplifyframework.datastore.generated.model.Likes
 import com.amplifyframework.datastore.generated.model.Posts
+import com.amplifyframework.datastore.generated.model.UserCloudGallery
 import com.appseen.contacts.sharing.app.callBacks.OnItemClickListener
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.ladstech.cloudgalleryapp.R
 import com.ladstech.cloudgalleryapp.adapters.AdapterComments
 import com.ladstech.cloudgalleryapp.databinding.ActivityPostDetailBinding
+import com.ladstech.cloudgalleryapp.room.database.AppDatabase
+import com.ladstech.cloudgalleryapp.room.entities.CommentsTable
+import com.ladstech.cloudgalleryapp.room.entities.LikesTable
+import com.ladstech.cloudgalleryapp.room.entities.PostsTable
+import com.ladstech.cloudgalleryapp.room.repositories.CommentsRepository
 import com.ladstech.cloudgalleryapp.utils.AppConstant
 import com.ladstech.cloudgalleryapp.utils.Helper
 import io.supercharge.shimmerlayout.ShimmerLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PostDetailActivity : BaseActivity() {
@@ -39,26 +52,31 @@ class PostDetailActivity : BaseActivity() {
         loadingLayout = mBinding.loadingLayout.rlLoading
         noDataFoundLayout = mBinding.noDataLayout.noDataChild
         shimmer = mBinding.shimmer
-
+        mBinding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
         ///get post from intent
         //   showLoading()
         intent?.let {
             post = Gson().fromJson(it.getStringExtra(AppConstant.KEY_DATA), Posts::class.java)
 
             ///user image
-            Glide.with(this@PostDetailActivity).load(Helper.getImageUrl(post.whoPostedUser.image))
-                .placeholder(R.drawable.eclipse).into(mBinding.ivUser)
+            Glide.with(this@PostDetailActivity).load(Helper.getImageUrl(sessionManager.user.image))
+                .placeholder(R.drawable.eclipse).into(mBinding.ivUserr)
+            printLog("user image ${Helper.getImageUrl(sessionManager.user.image)}")
+
             //post image
             Glide.with(this@PostDetailActivity).load(Helper.getImageUrl(post.image))
                 .placeholder(R.drawable.eclipse).into(mBinding.ivPostBg)
-            mBinding.tvPostName.text = post.title
+            mBinding.tvPostName.text = post.description
             mBinding.tvTime.text = Helper.getAwsDate(post.createdTime.toLong())
 
             post.let { post ->
                 shimmer.startShimmerAnimation()
+                shimmer.visibility = View.VISIBLE
                 initRv()
                 getCommentsOfPost(post)
-                getLikesOfPost(post)
+
             }
         }
 
@@ -74,6 +92,7 @@ class PostDetailActivity : BaseActivity() {
             Helper.hideKeyboard(this)
 
             val commentModel = Comments.Builder()
+
                 .createdTime(Helper.getCurrentTimeStamp())
                 .content(mBinding.etComment.text.toString().trim())
                 .post(post)
@@ -81,7 +100,14 @@ class PostDetailActivity : BaseActivity() {
                 .build()
             mBinding.etComment.setText("")
             Amplify.API.mutate(ModelMutation.create(commentModel),
-                { printLog("..comment added successfully..") },
+                {
+
+                    if (it.hasErrors()) {
+                        printLog("..comment added failed ${it.errors[0]}..")
+                    } else {
+                        printLog("..comment added successfully..")
+                    }
+                },
                 { printLog("..comment added failed..") })
 
 
@@ -98,6 +124,7 @@ class PostDetailActivity : BaseActivity() {
             if (likes.postId == post.id && likes.whoLikedUser.id == sessionManager.user.id) {
                 //do unlike
                 isFound = true
+                return@forEach
             }
         }
         if (isFound) {
@@ -153,141 +180,70 @@ class PostDetailActivity : BaseActivity() {
     }
 
     private fun getLikesOfPost(post: Posts) {
-        Amplify.API.query(
-            ModelQuery.list(
-                Likes::class.java
-            ),
-            { response ->
-                ThreadUtils.runOnUiThread {
-                    shimmer.stopShimmerAnimation()
+        viewModelLikes.let { likes ->
+
+            val observer = Observer<List<LikesTable>>() {
+                dataListLikes.clear()
+                it.forEach { likesTable ->
+
+                    if (likesTable.postId == post.id)
+                        dataListLikes.add(LikesTable.likeObjFromTable(likesTable))
                 }
-                response.data.forEach { likes ->
-                    if (likes.postId == post.id) {
-                        dataListLikes.add(likes)
+///total comments
+                ThreadUtils.runOnUiThread {
+                    if (dataListLikes.isEmpty()) {
+                        mBinding.tvLikesCount.text = "0"
+
+                    } else {
+                        mBinding.tvLikesCount.text = dataListLikes.size.toString()
 
                     }
-                }
 
-                ///total comments
-                ThreadUtils.runOnUiThread {
-                    mBinding.tvLikesCount.text = dataListLikes.size.toString()
                 }
-            },
-            {
-                ThreadUtils.runOnUiThread {
-                    shimmer.stopShimmerAnimation()
-                }
-                printLog("comments query failed ${it.cause}")
+                checkYourLike()
             }
-        )
-        subScribeToLikesCreate(post)
-        subScribeToLikesDelete(post)
-        checkYourLike()
+
+            viewModelLikes.liveDataList.observe(this@PostDetailActivity, observer)
+        }
+
+
     }
 
-    private fun subScribeToLikesCreate(post: Posts) {
-
-        Amplify.API.subscribe(ModelSubscription.onCreate(Likes::class.java),
-            { establish -> },
-            { recieived ->
-
-                val likes = recieived.data as Likes
-                if (likes.postId == post.id) {
-                    dataListLikes.add(likes)
-
-                    ThreadUtils.runOnUiThread {
-                        checkYourLike()
-                        mBinding.tvLikesCount.text = dataListLikes.size.toString()
-                    }
-                }
-
-            },
-            { failed -> },
-            {//complete})
-            })
-    }
-
-    private fun subScribeToLikesDelete(post: Posts) {
-
-        Amplify.API.subscribe(ModelSubscription.onDelete(Likes::class.java),
-            { establish -> },
-            { recieived ->
-
-                val likes = recieived.data as Likes
-                if (likes.postId == post.id) {
-                    dataListLikes.remove(likes)
-                    ThreadUtils.runOnUiThread {
-                        checkYourLike()
-                        mBinding.tvLikesCount.text = dataListLikes.size.toString()
-                    }
-                }
-
-            },
-            { failed -> },
-            {//complete})
-            })
-    }
 
     private fun getCommentsOfPost(post: Posts) {
-        Amplify.API.query(
-            ModelQuery.list(
-                Comments::class.java
-            ),
-            { response ->
-                ThreadUtils.runOnUiThread {
-                    shimmer.stopShimmerAnimation()
-                }
 
-                response.data.forEach { comments ->
 
-                    if (comments.post.id == post.id) {
-                        printLog(comments.toString())
-                        dataListComments.add(comments)
+        viewModelComments.let { commentsViewModel ->
+            val observer = Observer<List<CommentsTable>>() {
+                dataListComments.clear()
 
+                it.forEach { commentsTable ->
+
+                    //      printLog(commentsTable.toString())
+
+                    val comment = CommentsTable.commentObjFromCommentTable(commentsTable)
+                    if (comment.post.id == post.id) {
+                        printLog(comment.toString())
+                        dataListComments.add(comment)
                     }
-
-
                 }
-
-                ///total comments
+///total comments
                 ThreadUtils.runOnUiThread {
                     adapterComments.notifyDataSetChanged()
+                    shimmer.stopShimmerAnimation()
+                    shimmer.visibility = View.GONE
                     mBinding.tvCommentsCount.text = dataListComments.size.toString()
                 }
-            },
-            {
-                ThreadUtils.runOnUiThread {
-                    shimmer.stopShimmerAnimation()
-                }
-                printLog("comments query failed ${it.cause}")
             }
-        )
 
-        subScribeToComments()
-    }
+            commentsViewModel.allItemsLiveData.observe(this@PostDetailActivity, observer)
+        }
 
-    private fun subScribeToComments() {
+        getLikesOfPost(post)
 
-
-        Amplify.API.subscribe(ModelSubscription.onCreate(Comments::class.java),
-            { establish -> },
-            { recieived ->
-
-                val comment = recieived.data as Comments
-                if (comment.post.id == post.id) {
-                    dataListComments.add(comment)
-                    ThreadUtils.runOnUiThread {
-                        adapterComments.notifyDataSetChanged()
-                        mBinding.tvCommentsCount.text = dataListComments.size.toString()
-                    }
-                }
-
-            },
-            { failed -> },
-            {//complete})
-            })
 
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

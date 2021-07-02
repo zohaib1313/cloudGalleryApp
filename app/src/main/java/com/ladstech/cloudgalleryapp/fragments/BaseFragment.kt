@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import com.ladstech.cloudgalleryapp.utils.AppConstant.Companion.TAG
+import com.ladstech.cloudgalleryapp.utils.Helper
 
 import com.ladstech.cloudgalleryapp.utils.SessionManager
 
@@ -24,6 +25,7 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
 
 
         sessionManager = SessionManager.getInstance(requireContext().applicationContext)
+        Helper.refreshFcmToken(requireContext())
         //   isLoggedIn = sessionManager.isLoggedIn
     }
 

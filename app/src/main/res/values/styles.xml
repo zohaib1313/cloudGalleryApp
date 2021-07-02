@@ -104,6 +104,7 @@
 
     <style name="circleImageViewRound" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerSize">5%</item>
+
     </style>
 
 

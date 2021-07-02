@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ivNav"
+            android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -167,10 +167,23 @@
 
 
                 </androidx.cardview.widget.CardView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvComments"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:isScrollContainer="false"
+                    android:paddingBottom="@dimen/_50sdp"
+                    android:scrollbars="none"
 
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@+id/card"
+                    app:layout_constraintStart_toStartOf="@+id/card"
+                    app:layout_constraintTop_toBottomOf="@+id/card"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/row_comments" />
                 <io.supercharge.shimmerlayout.ShimmerLayout
                     android:id="@+id/shimmer"
-                    app:shimmer_color="@color/grey"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -180,18 +193,33 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/card"
                     app:layout_constraintTop_toBottomOf="@+id/card"
-                    app:shimmer_animation_duration="1200">
+                    app:shimmer_animation_duration="1200"
+                    app:shimmer_color="@color/grey">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvComments"
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:isScrollContainer="false"
-                        android:scrollbars="none"
-                        tools:itemCount="5"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/row_comments" />
+                        android:orientation="vertical">
+
+                        <include layout="@layout/row_comments" />
+
+                        <include layout="@layout/row_comments" />
+
+                        <include layout="@layout/row_comments" />
+
+                        <include layout="@layout/row_comments" />
+
+                        <include layout="@layout/row_comments" />
+
+
+                    </LinearLayout>
+
                 </io.supercharge.shimmerlayout.ShimmerLayout>
+
+
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -230,17 +258,17 @@
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/flag_transparent"
+
                     app:civ_border="true"
                     app:civ_border_color="@color/grey"
                     app:civ_border_width="1dp" />
 
                 <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/ivUser"
+                    android:id="@+id/ivUserr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_2sdp"
-                    android:src="@drawable/flag_aland"
+                    android:src="@drawable/eclipse"
                     app:civ_border="true"
                     app:civ_border_color="@color/grey"
                     app:civ_border_width="1dp" />

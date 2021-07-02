@@ -4,28 +4,31 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MyAmplifyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
-        android:theme="@style/Theme.CloudGalleryApp">
-        <activity
-            android:name=".activities.FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/Theme.CloudGalleryApp.Fullscreen">
+        android:theme="@style/Theme.CloudGalleryApp"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activities.Add_new_post_f"></activity>
 
-        </activity>
+        <activity android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.ProfileDetailsWatchActivity" />
+        <activity android:name="ir.shahabazimi.instagrampicker.gallery.SelectActivity" />
+        <activity android:name="ir.shahabazimi.instagrampicker.filter.FilterActivity" />
+        <activity android:name="ir.shahabazimi.instagrampicker.gallery.MultiSelectActivity" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activities.BlockedUserActivity" />
         <activity
             android:name=".activities.PostDetailActivity"

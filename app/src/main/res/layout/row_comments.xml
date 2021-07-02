@@ -23,7 +23,7 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_margin="@dimen/_2sdp"
-            android:src="@drawable/flag_aland"
+            android:src="@drawable/eclipse"
             app:civ_border="true"
             app:civ_border_color="@color/grey"
             app:civ_border_width="1dp" />
@@ -41,7 +41,7 @@
         android:gravity="start"
         android:maxLines="1"
         android:paddingStart="@dimen/_4sdp"
-        android:text="John Doe"
+        android:text="loading"
         android:textColor="@color/app_color_blue"
         android:textSize="@dimen/_11sdp" />
 
@@ -54,7 +54,7 @@
         android:layout_below="@+id/tvPersonName"
         android:layout_toEndOf="@+id/card"
         android:gravity="start"
-        android:text="John Doe"
+        android:text="loading.."
         android:textColor="@color/app_color_blue"
         android:textSize="@dimen/_12sdp" />
 

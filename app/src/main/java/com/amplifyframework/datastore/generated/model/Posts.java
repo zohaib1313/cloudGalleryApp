@@ -23,15 +23,11 @@ public final class Posts implements Model {
   public static final QueryField ID = field("Posts", "id");
   public static final QueryField CREATED_TIME = field("Posts", "createdTime");
   public static final QueryField IMAGE = field("Posts", "image");
-  public static final QueryField IS_PUBLIC = field("Posts", "isPublic");
-  public static final QueryField TITLE = field("Posts", "title");
   public static final QueryField DESCRIPTION = field("Posts", "description");
   public static final QueryField WHO_POSTED_USER = field("Posts", "postsWhoPostedUserId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String createdTime;
   private final @ModelField(targetType="String", isRequired = true) String image;
-  private final @ModelField(targetType="Boolean", isRequired = true) Boolean isPublic;
-  private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String", isRequired = true) String description;
   private final @ModelField(targetType="UserCloudGallery", isRequired = true) @BelongsTo(targetName = "postsWhoPostedUserId", type = UserCloudGallery.class) UserCloudGallery whoPostedUser;
   public String getId() {
@@ -46,14 +42,6 @@ public final class Posts implements Model {
       return image;
   }
   
-  public Boolean getIsPublic() {
-      return isPublic;
-  }
-  
-  public String getTitle() {
-      return title;
-  }
-  
   public String getDescription() {
       return description;
   }
@@ -62,12 +50,10 @@ public final class Posts implements Model {
       return whoPostedUser;
   }
   
-  private Posts(String id, String createdTime, String image, Boolean isPublic, String title, String description, UserCloudGallery whoPostedUser) {
+  private Posts(String id, String createdTime, String image, String description, UserCloudGallery whoPostedUser) {
     this.id = id;
     this.createdTime = createdTime;
     this.image = image;
-    this.isPublic = isPublic;
-    this.title = title;
     this.description = description;
     this.whoPostedUser = whoPostedUser;
   }
@@ -83,8 +69,6 @@ public final class Posts implements Model {
       return ObjectsCompat.equals(getId(), posts.getId()) &&
               ObjectsCompat.equals(getCreatedTime(), posts.getCreatedTime()) &&
               ObjectsCompat.equals(getImage(), posts.getImage()) &&
-              ObjectsCompat.equals(getIsPublic(), posts.getIsPublic()) &&
-              ObjectsCompat.equals(getTitle(), posts.getTitle()) &&
               ObjectsCompat.equals(getDescription(), posts.getDescription()) &&
               ObjectsCompat.equals(getWhoPostedUser(), posts.getWhoPostedUser());
       }
@@ -96,8 +80,6 @@ public final class Posts implements Model {
       .append(getId())
       .append(getCreatedTime())
       .append(getImage())
-      .append(getIsPublic())
-      .append(getTitle())
       .append(getDescription())
       .append(getWhoPostedUser())
       .toString()
@@ -111,8 +93,6 @@ public final class Posts implements Model {
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("createdTime=" + String.valueOf(getCreatedTime()) + ", ")
       .append("image=" + String.valueOf(getImage()) + ", ")
-      .append("isPublic=" + String.valueOf(getIsPublic()) + ", ")
-      .append("title=" + String.valueOf(getTitle()) + ", ")
       .append("description=" + String.valueOf(getDescription()) + ", ")
       .append("whoPostedUser=" + String.valueOf(getWhoPostedUser()))
       .append("}")
@@ -133,19 +113,9 @@ public final class Posts implements Model {
    * @throws IllegalArgumentException Checks that ID is in the proper format
    */
   public static Posts justId(String id) {
-    try {
-      UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-    } catch (Exception exception) {
-      throw new IllegalArgumentException(
-              "Model IDs must be unique in the format of UUID. This method is for creating instances " +
-              "of an existing object with only its ID field for sending as a mutation parameter. When " +
-              "creating a new object, use the standard builder method and leave the ID field blank."
-      );
-    }
+
     return new Posts(
       id,
-      null,
-      null,
       null,
       null,
       null,
@@ -157,8 +127,6 @@ public final class Posts implements Model {
     return new CopyOfBuilder(id,
       createdTime,
       image,
-      isPublic,
-      title,
       description,
       whoPostedUser);
   }
@@ -168,17 +136,7 @@ public final class Posts implements Model {
   
 
   public interface ImageStep {
-    IsPublicStep image(String image);
-  }
-  
-
-  public interface IsPublicStep {
-    TitleStep isPublic(Boolean isPublic);
-  }
-  
-
-  public interface TitleStep {
-    DescriptionStep title(String title);
+    DescriptionStep image(String image);
   }
   
 
@@ -198,12 +156,10 @@ public final class Posts implements Model {
   }
   
 
-  public static class Builder implements CreatedTimeStep, ImageStep, IsPublicStep, TitleStep, DescriptionStep, WhoPostedUserStep, BuildStep {
+  public static class Builder implements CreatedTimeStep, ImageStep, DescriptionStep, WhoPostedUserStep, BuildStep {
     private String id;
     private String createdTime;
     private String image;
-    private Boolean isPublic;
-    private String title;
     private String description;
     private UserCloudGallery whoPostedUser;
     @Override
@@ -214,8 +170,6 @@ public final class Posts implements Model {
           id,
           createdTime,
           image,
-          isPublic,
-          title,
           description,
           whoPostedUser);
     }
@@ -228,23 +182,9 @@ public final class Posts implements Model {
     }
     
     @Override
-     public IsPublicStep image(String image) {
+     public DescriptionStep image(String image) {
         Objects.requireNonNull(image);
         this.image = image;
-        return this;
-    }
-    
-    @Override
-     public TitleStep isPublic(Boolean isPublic) {
-        Objects.requireNonNull(isPublic);
-        this.isPublic = isPublic;
-        return this;
-    }
-    
-    @Override
-     public DescriptionStep title(String title) {
-        Objects.requireNonNull(title);
-        this.title = title;
         return this;
     }
     
@@ -271,26 +211,16 @@ public final class Posts implements Model {
      */
     public BuildStep id(String id) throws IllegalArgumentException {
         this.id = id;
-        
-        try {
-            UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-        } catch (Exception exception) {
-          throw new IllegalArgumentException("Model IDs must be unique in the format of UUID.",
-                    exception);
-        }
-        
         return this;
     }
   }
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String createdTime, String image, Boolean isPublic, String title, String description, UserCloudGallery whoPostedUser) {
+    private CopyOfBuilder(String id, String createdTime, String image, String description, UserCloudGallery whoPostedUser) {
       super.id(id);
       super.createdTime(createdTime)
         .image(image)
-        .isPublic(isPublic)
-        .title(title)
         .description(description)
         .whoPostedUser(whoPostedUser);
     }
@@ -303,16 +233,6 @@ public final class Posts implements Model {
     @Override
      public CopyOfBuilder image(String image) {
       return (CopyOfBuilder) super.image(image);
-    }
-    
-    @Override
-     public CopyOfBuilder isPublic(Boolean isPublic) {
-      return (CopyOfBuilder) super.isPublic(isPublic);
-    }
-    
-    @Override
-     public CopyOfBuilder title(String title) {
-      return (CopyOfBuilder) super.title(title);
     }
     
     @Override

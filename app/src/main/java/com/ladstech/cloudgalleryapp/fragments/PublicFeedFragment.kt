@@ -23,7 +23,7 @@ import com.google.gson.Gson
 import com.ladstech.cloudgalleryapp.R
 
 import com.ladstech.cloudgalleryapp.activities.AddPostActivity
-import com.ladstech.cloudgalleryapp.adapters.AdapterPosts
+import com.ladstech.cloudgalleryapp.adapters.AdapterHomePosts
 import com.ladstech.cloudgalleryapp.callBacks.MessageEvent
 import com.ladstech.cloudgalleryapp.databinding.FragmentPublicFeedBinding
 import com.ladstech.cloudgalleryapp.models.ModelAdapterAllPosts
@@ -44,7 +44,7 @@ import org.greenrobot.eventbus.ThreadMode
 class PublicFeedFragment : BaseFragment() {
 
     private lateinit var mBinding: FragmentPublicFeedBinding
-    private lateinit var adapterPosts: AdapterPosts
+    private lateinit var adapterHomePosts: AdapterHomePosts
     private var dataListPosts = ArrayList<Posts>()
     var dataListLikes = ArrayList<Likes>()
     var dataListComments = ArrayList<Comments>()
@@ -124,9 +124,9 @@ class PublicFeedFragment : BaseFragment() {
         mBinding.rvPost.layoutManager = LinearLayoutManager(requireContext())
         mBinding.rvPost.setHasFixedSize(true)
       //  adapterPosts = AdapterPosts(requireContext(), dataListAdapterItems)
-        mBinding.rvPost.adapter = adapterPosts
+        mBinding.rvPost.adapter = adapterHomePosts
 
-        adapterPosts.setOnItemClickListener(object : OnItemClickListener {
+        adapterHomePosts.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(view: View, position: Int, character: String) {
                 if (view.id == R.id.likeBtn) {
                     val item = dataListAdapterItems[position]
@@ -134,7 +134,7 @@ class PublicFeedFragment : BaseFragment() {
                         .apply { haveILiked = (!item.haveILiked) }
 
                     dataListAdapterItems[position] = itemUpdated
-                    adapterPosts.notifyDataSetChanged()
+                    adapterHomePosts.notifyDataSetChanged()
                     printLog("sending linking post of ${itemUpdated.haveILiked}")
                     sendLikeRequest(!itemUpdated.haveILiked, dataListAdapterItems[position])
 
@@ -199,7 +199,7 @@ class PublicFeedFragment : BaseFragment() {
                 adapterItemModel.comments.add(it)
         }
         dataListAdapterItems.add(adapterItemModel)
-        adapterPosts.notifyDataSetChanged()
+        adapterHomePosts.notifyDataSetChanged()
 
 
     }
@@ -276,8 +276,6 @@ class PublicFeedFragment : BaseFragment() {
                 val post = Posts.Builder()
                     .createdTime(posts.createdTime)
                     .image(posts.postImage)
-                    .isPublic(posts.isPublic)
-                    .title(posts.title)
                     .description(posts.description)
                     .whoPostedUser(
                         Gson().fromJson(
@@ -287,12 +285,8 @@ class PublicFeedFragment : BaseFragment() {
                     )
                     .id(posts.postId)
                     .build()
-
-
-                if (post.isPublic) {
                     dataListPosts.add(post)
 
-                }
             }
             initCommentObserver()
             initLikesObserver()
@@ -303,7 +297,7 @@ class PublicFeedFragment : BaseFragment() {
 
     private fun getListOfPosts() {
         dataListPosts.clear()
-        adapterPosts.notifyDataSetChanged()
+        adapterHomePosts.notifyDataSetChanged()
 
         ///reading one time
 
@@ -315,13 +309,13 @@ class PublicFeedFragment : BaseFragment() {
             if (response.data != null) {
 
                 response.data.forEach { posts ->
-                    if (posts.isPublic) {
-                        //  dataListPosts.add(it.data as Posts)
-                    }
+
+                //  dataListPosts.add(it.data as Posts)
+
                 }
                 ThreadUtils.runOnUiThread {
                     hideLoading()
-                    adapterPosts.notifyDataSetChanged()
+                    adapterHomePosts.notifyDataSetChanged()
                 }
 
             } else {
@@ -340,28 +334,28 @@ class PublicFeedFragment : BaseFragment() {
             ModelSubscription.onCreate(Posts::class.java),
             { Log.i(TAG, "Subscription established") },
             {
-                Log.i(TAG, "Post create subscription received: ${(it.data as Posts).title}")
+
                 ThreadUtils.runOnUiThread {
 
-                    if (it.data.isPublic) {
+
                         dataListPosts.add(it.data as Posts)
                         hideLoading()
-                        adapterPosts.notifyDataSetChanged()
-                    }
+                        adapterHomePosts.notifyDataSetChanged()
+
                 }
             },
             {
                 Log.e(TAG, "Subscription failed", it)
                 ThreadUtils.runOnUiThread {
                     hideLoading()
-                    adapterPosts.notifyDataSetChanged()
+                    adapterHomePosts.notifyDataSetChanged()
                 }
             },
             {
                 Log.i(TAG, "Subscription completed")
                 ThreadUtils.runOnUiThread {
                     hideLoading()
-                    adapterPosts.notifyDataSetChanged()
+                    adapterHomePosts.notifyDataSetChanged()
                 }
             }
         )

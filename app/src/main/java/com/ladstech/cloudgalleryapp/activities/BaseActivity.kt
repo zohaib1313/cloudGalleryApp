@@ -14,6 +14,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils
@@ -47,7 +48,7 @@ open class BaseActivity : AppCompatActivity() {
 
 
     //dataLists
-//    var dataListPosts = ArrayList<PostsTable>()
+//    var dataListPosts = MutableLiveData<Posts>()
 //    var dataListLikes = ArrayList<Likes>()
 //    var dataListComments = ArrayList<Comments>()
 //    var dataListConnections = ArrayList<Connections>()
@@ -57,258 +58,28 @@ open class BaseActivity : AppCompatActivity() {
 //    var dataListBadges = ArrayList<Badges>()
 
 
+    lateinit var  viewModelComments: CommentsViewModel
+    lateinit var viewModelLikes:LikesViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mContext = this
         sessionManager = SessionManager.getInstance(mContext.applicationContext)
         //   isLoggedIn = sessionManager.isLoggedIn
+
+        viewModelComments = ViewModelProviders.of(this@BaseActivity).get(CommentsViewModel::class.java)
+        viewModelLikes = ViewModelProviders.of(this@BaseActivity).get(LikesViewModel::class.java)
+
         setStatusBarMode(true)
         setStatusBarTransparent(this)
-        registerNetworkBroadcastForNougat()
-        initPostsViewModel()
 
 
-    }
 
-    private fun initLikesViewModel() {
-        val viewModelLikes =
-            ViewModelProviders.of(this@BaseActivity).get(LikesViewModel::class.java)
-        val request =
-            ModelQuery.list(Likes::class.java)
-        Amplify.API.query(request, { response ->
-            if (response.data != null) {
-                response.data.forEach { likes ->
-                    val likesTable = LikesTable()
-                    likesTable.id = likes.id
-                    likesTable.postId = likes.postId
-                    likesTable.whoCommentedUser = Gson().toJson(likes.whoLikedUser)
-                    viewModelLikes.insert(likesTable)
-                }
-            } else {
-                printLog("like response is null")
-            }
-        }, {
-            printLog("like exception  ${it.cause}")
-        })
-
-        val subscription = Amplify.API.subscribe(
-            ModelSubscription.onCreate(Likes::class.java),
-            { },
-            {
-                Log.i(
-                    AppConstant.TAG,
-                    "Post like subscription received: ${(it.data as Likes)}"
-                )
-                (it.data as Likes).let { likes ->
-                    ThreadUtils.runOnUiThread {
-                        val likeTable = LikesTable()
-                        likeTable.id = likes.id
-                        likeTable.whoCommentedUser = Gson().toJson(likes.whoLikedUser)
-                        likeTable.postId = likes.postId
-                        viewModelLikes.insert(likeTable)
-                    }
-                }
-
-            },
-            {
-                Log.e(AppConstant.TAG, "Subscription failed", it)
-//                ThreadUtils.runOnUiThread {
-//                    hideLoading()
-//                }
-            },
-            {
-                Log.i(AppConstant.TAG, "Subscription completed")
-//                ThreadUtils.runOnUiThread {
-//                    hideLoading()
-//                }
-            }
-        )
+  }
 
 
-    }
-
-    private fun initCommentsViewModel() {
-        val viewModelComments =
-            ViewModelProviders.of(this@BaseActivity).get(CommentsViewModel::class.java)
-        val request =
-            ModelQuery.list(Comments::class.java)
-        Amplify.API.query(request, { response ->
-            if (response.data != null) {
-                response.data.forEach { comments ->
-                    val commentTable = CommentsTable()
-                    commentTable.id = comments.id
-                    commentTable.content = comments.content
-                    commentTable.createdTime = comments.createdTime
-                    commentTable.post = Gson().toJson(comments.post)
-                    commentTable.whoCommentedUser = Gson().toJson(commentTable.whoCommentedUser)
-                    viewModelComments.insert(commentTable)
-                }
-            } else {
-                ThreadUtils.runOnUiThread { hideLoading() }
-            }
-        }, {
-            ThreadUtils.runOnUiThread { hideLoading() }
-        })
-
-        val subscription = Amplify.API.subscribe(
-            ModelSubscription.onCreate(Comments::class.java),
-            { },
-            {
-                Log.i(
-                    AppConstant.TAG,
-                    "Post create subscription received: ${(it.data as Comments).content}"
-                )
-                (it.data as Comments).let { comments ->
-                    ThreadUtils.runOnUiThread {
-                        val commentTable = CommentsTable()
-                        commentTable.id = comments.id
-                        commentTable.content = comments.content
-                        commentTable.createdTime = comments.createdTime
-                        commentTable.post = Gson().toJson(comments.post)
-                        commentTable.whoCommentedUser = Gson().toJson(commentTable.whoCommentedUser)
-                        viewModelComments.insert(commentTable)
-                    }
-                }
-            },
-            {
-                Log.e(AppConstant.TAG, "Subscription failed", it)
-//                ThreadUtils.runOnUiThread {
-//                    hideLoading()
-//                }
-            },
-            {
-                Log.i(AppConstant.TAG, "Subscription completed")
-//                ThreadUtils.runOnUiThread {
-//                    hideLoading()
-//                }
-            }
-        )
 
 
-    }
 
-    private fun initPostsViewModel() {
-        showLoading()
-        val viewModelPosts =
-            ViewModelProviders.of(this@BaseActivity).get(PostsViewModel::class.java)
-        val request =
-            ModelQuery.list(Posts::class.java)
-        Amplify.API.query(request, { response ->
-            if (response.data != null) {
-                response.data.forEach { posts ->
-                    if (posts.isPublic) {
-                        val postsTable = PostsTable()
-                        postsTable.postId = posts.id
-                        postsTable.postImage=posts.image
-                        postsTable.title = posts.title
-                        postsTable.description = posts.description
-                        postsTable.isPublic = posts.isPublic
-                        postsTable.createdTime = posts.createdTime
-                        postsTable.whoPostedUser = Gson().toJson(posts.whoPostedUser)
-                        viewModelPosts?.insert(postsTable)
-                    }
-                }
-//                initCommentsViewModel()
-//                initLikesViewModel()
-                ThreadUtils.runOnUiThread {
-                    hideLoading()
-                }
-
-            } else {
-                printLog("no posts")
-                ThreadUtils.runOnUiThread { hideLoading() }
-            }
-        }, {
-            printLog("error getting posts")
-            ThreadUtils.runOnUiThread { hideLoading() }
-        })
-//!!!!!!!!!!!!!!!  subscriber create !!!!!!!!!!!!!!!!/
-        val subscription = Amplify.API.subscribe(
-            ModelSubscription.onCreate(Posts::class.java),
-            { Log.i(AppConstant.TAG, "post create Subscription established") },
-            {
-                Log.i(
-                    AppConstant.TAG,
-                    "Post create subscription received: ${(it.data as Posts).toString()}"
-                )
-                ThreadUtils.runOnUiThread {
-                    if (it.data.isPublic) {
-                        val posts = it.data
-                        //  dataListPosts.add(it.data as Posts)
-                        val postsTable = PostsTable()
-                        postsTable.postId = posts.id
-                        postsTable.title = posts.title
-                        postsTable.description = posts.description
-                        postsTable.isPublic = posts.isPublic
-                        postsTable.createdTime = posts.createdTime
-                        postsTable.whoPostedUser = Gson().toJson(posts.whoPostedUser)
-                        viewModelPosts?.insert(postsTable)
-                        hideLoading()
-                    }
-                }
-            },
-            {
-                Log.e(AppConstant.TAG, "Subscription failed", it)
-                ThreadUtils.runOnUiThread {
-                    hideLoading()
-                }
-            },
-            {
-                Log.i(AppConstant.TAG, "Post create Subscription completed")
-                ThreadUtils.runOnUiThread {
-                    hideLoading()
-                }
-            }
-        )
-
-//!!!!!!!!!!!!!!!  subscriber delete !!!!!!!!!!!!!!!!/
-
-
-        val subscriptionDelete = Amplify.API.subscribe(
-            ModelSubscription.onDelete(Posts::class.java),
-            { Log.i(AppConstant.TAG, "post delete Subscription established") },
-            {
-                Log.i(
-                    AppConstant.TAG,
-                    "Post delete subscription received: ${(it.data as Posts).title}"
-                )
-                ThreadUtils.runOnUiThread {
-                    if (it.data.isPublic) {
-                        val posts = it.data
-                        //  dataListPosts.add(it.data as Posts)
-                        val postsTable = PostsTable()
-                        postsTable.postId = posts.id
-                        postsTable.title = posts.title
-                        postsTable.description = posts.description
-                        postsTable.isPublic = posts.isPublic
-                        postsTable.createdTime = posts.createdTime
-                        postsTable.whoPostedUser = Gson().toJson(posts.whoPostedUser)
-                        viewModelPosts?.delete(postsTable)
-                        hideLoading()
-                    }
-                }
-            },
-            {
-                Log.e(AppConstant.TAG, " Post delete Subscription failed", it)
-                ThreadUtils.runOnUiThread {
-                    hideLoading()
-                }
-            },
-            {
-                Log.i(AppConstant.TAG, "Subscription completed")
-                ThreadUtils.runOnUiThread {
-                    hideLoading()
-                }
-            }
-        )
-        if (subscription != null) {
-        printLog("delete subscription started")
-            subscription.start()
-        }
-        if (subscriptionDelete != null) {
-            subscriptionDelete.start()
-        }
-    }
 
 
     override fun onDestroy() {

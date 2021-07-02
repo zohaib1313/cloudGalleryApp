@@ -309,6 +309,7 @@ object Helper {
             val token = task.result
             SessionManager.getInstance(context)?.let {
                 it.updateToken(token.toString())
+
                 if (it.user != null) {
                     updateUserInAwsForFcmToken(token.toString(), context)
                 }
@@ -321,17 +322,6 @@ object Helper {
 
         val sessionUser = SessionManager.getInstance(context.applicationContext).user
         sessionUser?.let { it ->
-//            val user = UserCloudGallery.builder()
-//                .name(it.name)
-//                .phone(it.phone)
-//                .deviceToken(token)
-//                .createdTime(it.createdTime)
-//                .isPublic(it.isPublic)
-//                .about(it.about)
-//                .id(it.id)
-//                .image(it.image)
-            //       val userFinal = user.build()
-
 
             val request = ModelQuery.get(UserCloudGallery::class.java, it.id)
             Amplify.API.query(request, { response ->
@@ -339,34 +329,18 @@ object Helper {
                     val user = response.data.copyOfBuilder()
                         .deviceToken(token)
                         .build()
+
                     Amplify.API.mutate(ModelMutation.update(user), {
                         if (it.hasErrors()) {
-                            Log.i(AppConstant.TAG, "updation in device token failed")
+                            Log.i(AppConstant.TAG, "updation in fcm token failed cloud")
                         } else {
-                            Log.i(AppConstant.TAG, "Updated a device token")
+                            Log.i(AppConstant.TAG, "Updated a fcm token in cloud")
                         }
                     }, {
                     })
                 }
 
             }, {})
-
-
-//            Amplify.DataStore.query(UserCloudGallery::class.java, Where.id(it.id),
-//                { matches ->
-//                    if (matches.hasNext()) {
-//                        val original = matches.next()
-//                        val edited = original.copyOfBuilder()
-//                            .deviceToken(token)
-//                            .build()
-//                        Amplify.DataStore.save(edited,
-//                            { Log.i(AppConstant.TAG, "Updated a aws token") },
-//                            { Log.e("MyAmplifyApp", "Update in aws token failed", it) }
-//                        )
-//                    }
-//                },
-//                { Log.e("MyAmplifyApp", "Query failed", it) }
-//            )
 
 
         }

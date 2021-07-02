@@ -4,6 +4,10 @@ import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.amplifyframework.datastore.generated.model.Comments
+import com.amplifyframework.datastore.generated.model.Likes
+import com.amplifyframework.datastore.generated.model.Posts
+import com.amplifyframework.datastore.generated.model.UserCloudGallery
 import com.google.gson.Gson
 
 
@@ -29,7 +33,15 @@ class LikesTable(
         const val POST = "post"
         const val USER_LIKED = "likeBy"
 
+        fun likeObjFromTable(table: LikesTable): Likes {
+            val obj = Likes.Builder()
+                .postId(table.postId)
+                .whoLikedUser(Gson().fromJson(table.whoCommentedUser, UserCloudGallery::class.java))
+                .id(table.id)
+                .build()
+            return obj
 
+        }
 
     }
 

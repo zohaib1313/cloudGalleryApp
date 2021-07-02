@@ -4,6 +4,9 @@ import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.amplifyframework.datastore.generated.model.Comments
+import com.amplifyframework.datastore.generated.model.Posts
+import com.amplifyframework.datastore.generated.model.UserCloudGallery
 import com.google.gson.Gson
 
 
@@ -39,8 +42,16 @@ class CommentsTable(
         const val POST = "post"
         const val USER_COMMENTED = "commentedBy"
 
+        fun commentObjFromCommentTable(table: CommentsTable): Comments {
+            val commetObj = Comments.Builder()
+                .content(table.content)
+                .post(Gson().fromJson(table.post, Posts::class.java))
+                .whoCommentedUser(Gson().fromJson(table.whoCommentedUser, UserCloudGallery::class.java))
+                .id(table.id)
+                .build()
+            return commetObj
 
-
+        }
     }
 
 
@@ -50,6 +61,10 @@ class CommentsTable(
 
     inline fun <reified T : JSONConvertable> String.toObject(): T =
         Gson().fromJson(this, T::class.java)
+
+    override fun toString(): String {
+        return "CommentsTable(id='$id', createdTime='$createdTime', content='$content', post='$post', whoCommentedUser='$whoCommentedUser')"
+    }
 
 
 }

@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.ladstech.cloudgalleryapp.R
-import com.ladstech.cloudgalleryapp.activities.GalleryAppHome
+
 import com.ladstech.cloudgalleryapp.activities.HomeActivity
 import com.ladstech.cloudgalleryapp.callBacks.MessageEvent
 import com.ladstech.cloudgalleryapp.databinding.FragmentMyAccountBinding
@@ -46,16 +46,16 @@ class ProfileFragmentF : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = FragmentProfileFragmentBinding.inflate(layoutInflater)
-
+        loadingLayout=mBinding.loadingLayout.rlLoading
         mBinding.ivBack.setOnClickListener {
             ///event bus
         }
         loadingLayout = mBinding.loadingLayout.rlLoading
         noDataFoundLayout = mBinding.noDataLayout.noDataChild
         firebaseAuth = FirebaseAuth.getInstance()
-      if(firebaseAuth.currentUser!=null)
-        userPhoneNumber =
-            firebaseAuth.currentUser.phoneNumber.toString().replace("-", "").replace(" ", "")
+        if (firebaseAuth.currentUser != null)
+            userPhoneNumber =
+                firebaseAuth.currentUser.phoneNumber.toString().replace("-", "").replace(" ", "")
 
 
         mBinding.imageView.setOnClickListener {
@@ -95,8 +95,7 @@ class ProfileFragmentF : BaseFragment() {
                 }
         }
         Helper.refreshFcmToken(requireContext())
-        if(firebaseAuth.currentUser!=null)
-        checkIfUserExists()
+
 
         // Inflate the layout for this fragment
         return mBinding.root
@@ -117,7 +116,7 @@ class ProfileFragmentF : BaseFragment() {
             .phone(userPhoneNumber)
             .deviceToken(deviceToken)
             .createdTime(Helper.getCurrentTimeStamp())
-            .isPublic(mBinding.switch1.isChecked)
+            .isPublic(!(mBinding.switch1.isChecked))
             .about("About")
             .image(imagekey)
             .id(userPhoneNumber)
@@ -137,7 +136,7 @@ class ProfileFragmentF : BaseFragment() {
                     val updatedUser = previousUser.copyOfBuilder()
                         .about("My Status")
                         .name(mBinding.editTextTextPersonName.text.toString())
-                        .isPublic(mBinding.switch1.isChecked)
+                        .isPublic(!mBinding.switch1.isChecked)
 
                     if (imagekey != "null") {
                         updatedUser.image(imagekey)
@@ -157,7 +156,7 @@ class ProfileFragmentF : BaseFragment() {
                                 return@mutate
                             } else {
 
-                                sessionManager.createUserLoginSession(user)
+                                sessionManager.createUserLoginSession(updatedUser.build())
                                 Helper.startActivity(
                                     requireActivity(),
                                     Intent(requireContext(), HomeActivity::class.java),
@@ -227,14 +226,15 @@ class ProfileFragmentF : BaseFragment() {
     //!....................................!!!!!!!!!!!!!.........................................!!!!!!
     private fun getFcmToken() {
 
-        if (sessionManager.token != null) {
+        if (sessionManager.token != "null") {
             printLog("...........fcm token not null ............")
             deviceToken = sessionManager.token
             uploadDataToDataStore()
         } else {
             printLog("fcm token was null ,, refreshing.....")
             Helper.refreshFcmToken(requireContext())
-            getFcmToken()
+            Toast.makeText(requireContext(), "Try again", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -290,10 +290,10 @@ class ProfileFragmentF : BaseFragment() {
                     mBinding.editTextTextPersonName.setText(user.name)
                     //  mBinding.etAbout.setText(user.about)
 
-                  if(user.image!="null")
-                    Glide.with(requireContext()).load(Helper.getImageUrl(user.image))
-                        .into(mBinding.imageView4)
-                    mBinding.switch1.isChecked = user.isPublic
+                    if (user.image != "null")
+                        Glide.with(requireContext()).load(Helper.getImageUrl(user.image))
+                            .into(mBinding.imageView4)
+                    mBinding.switch1.isChecked = !user.isPublic
 
                     isUserFound = true
                     printLog("user found")
@@ -321,7 +321,11 @@ class ProfileFragmentF : BaseFragment() {
         super.onResume()
         activity?.window?.statusBarColor =
             ContextCompat.getColor(requireContext(), R.color.app_color_blue)
-
+        if (firebaseAuth.currentUser != null) {
+            userPhoneNumber =
+                firebaseAuth.currentUser.phoneNumber.toString().replace("-", "").replace(" ", "")
+            checkIfUserExists()
+        }
     }
     //!....................................!!!!!!!!!!!!!.........................................!!!!!!
 
@@ -350,6 +354,7 @@ class ProfileFragmentF : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
+
     }
 
     //!....................................!!!!!!!!!!!!!.........................................!!!!!!
@@ -368,4 +373,6 @@ class ProfileFragmentF : BaseFragment() {
             }
         }
     }
+
+
 }

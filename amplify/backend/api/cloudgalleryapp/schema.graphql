@@ -15,8 +15,6 @@ type Posts @model {
     id: ID!
     createdTime: String!
     image: String!
-    isPublic:Boolean!
-    title: String!
     description:String!
     whoPostedUser: UserCloudGallery! @connection
 }

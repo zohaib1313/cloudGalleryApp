@@ -2,6 +2,7 @@ package com.ladstech.cloudgalleryapp.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 
 import com.amplifyframework.datastore.generated.model.UserCloudGallery;
@@ -69,7 +70,6 @@ public class SessionManager {
 
 
     public void createUserLoginSession(UserCloudGallery user) {
-        clearSession();
         // Storing login value as TRUE
         editor.putBoolean(AppConstant.KEY_IS_LOGGED_IN, true);
         editor.putBoolean(AppConstant.IS_VISITED_INTRO, true);
@@ -111,6 +111,8 @@ public class SessionManager {
 
 
     public void updateToken(@NotNull String token) {
+
+        Log.d("taaaag","fcm token update in helper "+token);
         editor.putString(AppConstant.PUSH_TOKEN, token);
         editor.commit();
     }
